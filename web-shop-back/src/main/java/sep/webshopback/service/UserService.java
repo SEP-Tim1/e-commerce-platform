@@ -28,8 +28,4 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
-    public User getById(Long id){
-        return userRepository.getById(id);
-    }
-
 }

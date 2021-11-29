@@ -121,7 +121,7 @@ public class User implements UserDetails {
         return phone;
     }
 
-    public void setPhoneNumber(String phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 

@@ -18,8 +18,8 @@ import sep.webshopback.security.TokenUtils;
 import sep.webshopback.service.UserService;
 
 @RestController
-@RequestMapping("user")
-public class UserController {
+@RequestMapping("auth")
+public class AuthController {
 
     @Autowired
     private UserService userService;
@@ -35,9 +35,7 @@ public class UserController {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword()));
-            //Save logged user in security context
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            //Create token for user
             User user = (User) authentication.getPrincipal();
             if (user.isAccountNonExpired() && user.isAccountNonLocked()) {
                 String jwt = tokenUtils.generateToken(user.getUsername(), user.getRole().toString(), user.getId());
@@ -56,15 +54,22 @@ public class UserController {
         return ResponseEntity.ok("logout");
     }
 
-    @PostMapping("registration")
+    @PostMapping("/registration")
     public ResponseEntity<?> registration(@RequestBody UserRegistrationDTO newUser){
         userService.registration(newUser);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    @GetMapping("/ulogovan")
+    //Examples
+
+    @GetMapping("/only-user")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> ulogovan(){
-        return ResponseEntity.ok("ulogovan si pa smes");
+    public ResponseEntity<?> onlyUser(){
+        return ResponseEntity.ok("USER");
+    }
+
+    @GetMapping("/anyone")
+    public ResponseEntity<?> anyone(){
+        return ResponseEntity.ok("ANYONE");
     }
 }
