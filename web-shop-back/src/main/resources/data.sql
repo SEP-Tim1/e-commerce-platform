@@ -1,2 +1,2 @@
-insert into users(id, username, email, first_name, last_name, password, phone, role) values (0, 'user0', 'user0@email.com', 'Milijana', 'Djordjevic', '12345678', '+381641111111', 'USER');
-insert into users(id, username, email, first_name, last_name, password, phone, role) values (1, 'user1', 'user1@email.com', 'Milijana', 'Djordjevic', '12345678', '+381641111111', 'SELLER');
+insert into users(id, username, email, first_name, last_name, password, phone, role, address) values (0, 'user0', 'user0@email.com', 'Milijana', 'Djordjevic', '12345678', '+381641111111', 'USER', 'Adresa0');
+insert into users(id, username, email, first_name, last_name, password, phone, role, address) values (1, 'user1', 'user1@email.com', 'Milijana', 'Djordjevic', '12345678', '+381641111111', 'SELLER', 'Adresa1');

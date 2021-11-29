@@ -9,14 +9,21 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import sep.webshopback.dtos.JwtDTO;
 import sep.webshopback.dtos.LoginDTO;
+import sep.webshopback.dtos.NewInfoDTO;
 import sep.webshopback.dtos.UserRegistrationDTO;
 import sep.webshopback.model.User;
 import sep.webshopback.security.TokenUtils;
 import sep.webshopback.service.UserService;
 
+import javax.validation.Valid;
+
+@Validated
 @RestController
 @RequestMapping("auth")
 public class AuthController {
@@ -54,11 +61,30 @@ public class AuthController {
         return ResponseEntity.ok("logout");
     }
 
-    @PostMapping("/registration")
-    public ResponseEntity<?> registration(@RequestBody UserRegistrationDTO newUser){
-        userService.registration(newUser);
-        return new ResponseEntity(HttpStatus.CREATED);
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@Valid @RequestBody UserRegistrationDTO userDTO) {
+        try {
+            userService.registration(userDTO);
+            return new ResponseEntity(HttpStatus.CREATED);
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body("Bad request.");
+        }
     }
+
+    @PostMapping("/update")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> updateInfo(@Valid @RequestBody NewInfoDTO infoDTO) {
+        try {
+            User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            userService.updateInfo(infoDTO, user.getId());
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body("Bad request.");
+        }
+    }
+
 
     //Examples
 

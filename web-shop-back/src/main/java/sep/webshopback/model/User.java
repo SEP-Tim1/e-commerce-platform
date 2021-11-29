@@ -31,7 +31,7 @@ public class User implements UserDetails {
     @Email(message = "A valid email address must be provided.")
     private String email;
 
-    @Column(length = 50, unique = true, name="username")
+    @Column(length = 20, unique = true, name="username")
     @NotBlank
     private String username;
 
@@ -39,12 +39,10 @@ public class User implements UserDetails {
     @NotNull
     private Role role;
 
-    @Column(length = 75, name = "first_name")
-    @Length(min = 2, max = 50, message = "First name length should be between 2 and 75 characters.")
+    @Column(length = 50, name = "first_name")
     private String firstName;
 
-    @Column(length = 100, name = "last_name")
-    @Length(min = 3, max = 100, message = "Last name length should be between 3 and 100 characters.")
+    @Column(length = 50, name = "last_name")
     private String lastName;
 
     @Column(length = 20, name = "phone")
@@ -62,15 +60,21 @@ public class User implements UserDetails {
         this.password = password;
         this.email = email;
         this.role = role;
+        this.firstName = "";
+        this.lastName = "";
+        this.phone = "";
+        this.address = "";
     }
 
-    public User(String firstName, String lastName, String phone, String username, String password, String email, Role role) {
+    public User(String firstName, String lastName, String phone, String username, String password, String email, Role role, String address) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.password = password;
         this.email = email;
+        this.phone = phone;
         this.role = role;
+        this.address = address;
     }
 
     public long getId() { return this.id; }
@@ -123,6 +127,14 @@ public class User implements UserDetails {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     @Override
