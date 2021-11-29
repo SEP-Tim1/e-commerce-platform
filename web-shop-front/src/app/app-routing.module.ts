@@ -1,10 +1,33 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { RouteGuardService } from './authentication/authorization/route-guard.service';
+import { LoginComponent } from './authentication/login/login.component';
+import { RegistrationComponent } from './authentication/registration/registration.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { SellerHomeComponent } from './seller-home/seller-home.component';
+import { UserHomeComponent } from './user/user-home/user-home.component';
 
-const routes: Routes = [];
+const routes: Routes = [
+  { path: '', component: LoginComponent },
+  {
+    path: 'user-home',
+    component: UserHomeComponent,
+    canActivate: [RouteGuardService],
+    data: { expectedRoles: ['USER'] },
+  },
+  {
+    path: 'seller-home',
+    component: SellerHomeComponent,
+    canActivate: [RouteGuardService],
+    data: { expectedRoles: ['SELLER'] },
+  },
+  { path: 'login', component: LoginComponent },
+  { path: 'registration', component: RegistrationComponent },
+  { path: '**', component: PageNotFoundComponent },
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
