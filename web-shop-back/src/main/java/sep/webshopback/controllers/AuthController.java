@@ -1,6 +1,5 @@
 package sep.webshopback.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -9,9 +8,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import sep.webshopback.dtos.JwtDTO;
 import sep.webshopback.dtos.LoginDTO;
@@ -22,20 +19,24 @@ import sep.webshopback.security.TokenUtils;
 import sep.webshopback.service.UserService;
 
 import javax.validation.Valid;
+import java.net.URI;
 
 @Validated
 @RestController
 @RequestMapping("auth")
 public class AuthController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    private TokenUtils tokenUtils;
+    private final TokenUtils tokenUtils;
+
+    public AuthController(UserService userService, AuthenticationManager authenticationManager, TokenUtils tokenUtils) {
+        this.userService = userService;
+        this.authenticationManager = authenticationManager;
+        this.tokenUtils = tokenUtils;
+    }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
@@ -55,7 +56,7 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logout() throws Exception {
+    public ResponseEntity<?> logout() {
 
         SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
         return ResponseEntity.ok("logout");
@@ -64,8 +65,8 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody UserRegistrationDTO userDTO) {
         try {
-            userService.registration(userDTO);
-            return new ResponseEntity(HttpStatus.CREATED);
+            User user = userService.registration(userDTO);
+            return ResponseEntity.created(URI.create("/user/" + user.getId())).build();
         }
         catch (Exception e) {
             return ResponseEntity.badRequest().body("Bad request.");
@@ -78,7 +79,7 @@ public class AuthController {
         try {
             User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             userService.updateInfo(infoDTO, user.getId());
-            return new ResponseEntity(HttpStatus.OK);
+            return ResponseEntity.ok("Updated.");
         }
         catch (Exception e) {
             return ResponseEntity.badRequest().body("Bad request.");
