@@ -95,6 +95,19 @@ public class AuthController {
         }
     }
 
+    @GetMapping("/info")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> updateInfo() {
+        try {
+            User authenticated = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            User user = userService.getById(authenticated.getId());
+            return ResponseEntity.ok(new NewInfoDTO(user.getFirstName(), user.getLastName(), user.getPhone(), user.getAddress()));
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body("Bad request.");
+        }
+    }
+
 
     //Examples
 

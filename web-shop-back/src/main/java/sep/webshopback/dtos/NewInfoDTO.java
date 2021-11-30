@@ -18,6 +18,13 @@ public class NewInfoDTO {
 
     public NewInfoDTO(){}
 
+    public NewInfoDTO(String firstName, String lastName, String phone, String address) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.address = address;
+    }
+
     public String getFirstName() {
         return firstName;
     }

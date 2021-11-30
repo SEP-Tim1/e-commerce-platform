@@ -44,6 +44,10 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
+    public User getById(long id){
+        return userRepository.findById(id).get();
+    }
+
     private void validateEmail(String email) throws EmailNotUniqueException {
         if (userRepository.findUserByEmail(email) != null)
             throw new EmailNotUniqueException();
