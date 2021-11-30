@@ -1,0 +1,45 @@
+  <div style="height:105%; display: flex; justify-content: center; background-position: center; background-repeat: no-repeat; background-size: cover; height: max-content; background-color: rgb(248, 184, 221);">
+    <mat-card class="mat-elevation-z8" style="margin-top: 4%; margin-bottom: 7%; width: 60%; height: 80%; display: flex; justify-content: center; align-items: center; height: max-content; padding-top: 20px; opacity: 80%;">
+            <form #feedform="ngForm" style="width: 80%;" (ngSubmit)="submit()" novalidate>
+                
+                <h2 style="text-align: center;">
+                    Create new product
+                </h2>
+                   
+                <div style="margin-bottom: 5%;"> 
+                    <mat-form-field style="width:100%;">
+                        <mat-label>Name</mat-label>
+                        <input matInput required placeholder="Add product name" id="productName" #name = "ngModel" name="c1" [(ngModel)] = "nameOfProduct" style="height: 40%;"/>
+                    </mat-form-field>
+                  </div>
+
+                  <div style="margin-bottom: 5%;">
+                    <mat-form-field style="width:100%;">
+                        <mat-label>Price</mat-label>
+                        <input matInput  required placeholder="Add product price" id="productPrice" #name2 = "ngModel" name="c2" [(ngModel)] = "price" style="height: 40%;"/>
+                    </mat-form-field>
+                </div>
+
+                <div style="margin-bottom: 5%;">
+                    <mat-form-field style="width:100%;">
+                        <mat-label>Quantity</mat-label>
+                        <input matInput required  type="number" min="1" placeholder="Add product quantity" id="productQuantity" #name3 = "ngModel" name="c3" [(ngModel)] = "quantity" style="height: 40%;"/>
+                    </mat-form-field>
+                </div>
+
+                <div  style="margin-top: 22px; margin-bottom: 1%; text-align: center;">
+                    <input style="display: none;" type="file" (change)="onFileSelected($event)" accept=".jpg, .png, .mp4" #fileInput>
+                    <span class="phone-in-line" style="max-width: 35%;">
+                      <button mat-raised-button color="accent" type="button" style="padding: 12px 32px; margin-right: 1%;" (click)="fileInput.click()">
+                        <mat-label [hidden]="!selectedFileHide">Pick data</mat-label>
+                        <mat-label [hidden]="selectedFileHide">{{fileName}}</mat-label>
+                      </button>
+                    </span>
+                    <span class="phone-in-line" style="max-width: 35%;">
+                      <button mat-raised-button color="primary" style="padding: 12px 32px; margin-left: 12%;" [disabled] ="name.invalid || name2.invalid || name3.invalid" type="submit" >Post data</button>
+                    </span>
+                </div> 
+
+            </form>
+    </mat-card>
+</div>

@@ -17,17 +17,10 @@ public class StoreService {
     @Autowired
     StoreRepository storeRepository;
 
-    @Autowired
-    ProductRepository productRepository;
-
+  
     public Store getById(long id) throws StoreNotFoundException {
         if(storeRepository.findById(id).isPresent()) return storeRepository.findById(id).get();
         throw new StoreNotFoundException();
-    }
-
-    public Product getProductById(long id) throws ProductNotFoundException {
-        if(productRepository.findById(id).isPresent()) return productRepository.findById(id).get();
-        throw new ProductNotFoundException();
     }
 
     public List<Store> getAllByName(String name){

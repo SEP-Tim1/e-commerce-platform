@@ -22,6 +22,7 @@ import { UpdateInfoComponent } from './authentication/update-info/update-info.co
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptorService } from './authentication/authorization/auth-interceptor.service';
+import { CreateProductComponent } from './seller/create-product/create-product.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { AuthInterceptorService } from './authentication/authorization/auth-inte
     UserHomeComponent,
     SellerHomeComponent,
     UpdateInfoComponent,
+    CreateProductComponent,
   ],
   imports: [
     BrowserModule,
