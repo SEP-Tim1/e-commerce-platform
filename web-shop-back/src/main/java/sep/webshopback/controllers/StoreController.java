@@ -14,6 +14,7 @@ import sep.webshopback.util.UserToken;
 import javax.validation.Valid;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("store")
 public class StoreController {

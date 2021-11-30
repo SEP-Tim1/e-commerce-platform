@@ -19,6 +19,9 @@ import { UserHomeComponent } from './user/user-home/user-home.component';
 import { MatSelectModule } from '@angular/material/select';
 import { SellerHomeComponent } from './seller/seller-home/seller-home.component';
 import { UpdateInfoComponent } from './authentication/update-info/update-info.component';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatListModule } from '@angular/material/list';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptorService } from './authentication/authorization/auth-interceptor.service';
@@ -48,6 +51,9 @@ import { AuthInterceptorService } from './authentication/authorization/auth-inte
     MatSelectModule,
     ReactiveFormsModule,
     HttpClientModule,
+    MatDividerModule,
+    MatListModule,
+    MatGridListModule,
   ],
   providers: [
     {
