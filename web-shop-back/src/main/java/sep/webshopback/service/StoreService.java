@@ -40,4 +40,10 @@ public class StoreService {
         throw new StoreNotFoundException();
     }
 
+    public List<Product> getProductsInStore(long storeId) throws StoreNotFoundException {
+        if(storeRepository.findById(storeId).isPresent()) return productRepository.findProductsByStoreId(storeId);
+        throw new StoreNotFoundException();
+    }
+
+
 }
