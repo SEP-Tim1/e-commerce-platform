@@ -9,6 +9,7 @@ import sep.webshopback.exceptions.StoreNotFoundException;
 import sep.webshopback.model.Product;
 import sep.webshopback.model.Store;
 import sep.webshopback.service.StoreService;
+import sep.webshopback.util.UserToken;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -54,14 +55,16 @@ public class StoreController {
         }
     }
 
-    @PutMapping("/name/{ownerId}")
-    public ResponseEntity<?> setStoreNameByOwnerId(@PathVariable long ownerId, @Valid @RequestBody StoreNameDTO name) {
+    @PutMapping("/name")
+    @PreAuthorize("hasRole('SELLER')")
+    public ResponseEntity<?> setStoreNameByOwnerId(@Valid @RequestBody StoreNameDTO name) {
         try {
-            storeService.setStoreNameByOwnerId(ownerId, name.getName());
+            storeService.setStoreNameByOwnerId(UserToken.getUserIdFromToken(), name.getName());
             return ResponseEntity.ok("Store name is updated.");
         } catch (StoreNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
+
 }
 
