@@ -8,6 +8,7 @@ import sep.webshopback.dtos.StoreDTO;
 import sep.webshopback.exceptions.StoreNotFoundException;
 import sep.webshopback.model.Product;
 import sep.webshopback.model.Store;
+import sep.webshopback.service.ProductService;
 import sep.webshopback.service.StoreService;
 import sep.webshopback.util.UserToken;
 
@@ -19,9 +20,11 @@ import java.util.List;
 public class StoreController {
 
     private final StoreService storeService;
+    private final ProductService productService;
 
-    public StoreController(StoreService storeService) {
+    public StoreController(StoreService storeService, ProductService productService) {
         this.storeService = storeService;
+        this.productService = productService;
     }
 
     @GetMapping("/by-owner/{id}")
@@ -38,7 +41,7 @@ public class StoreController {
     @GetMapping("/{id}/products")
     public ResponseEntity<?> getProducts(@PathVariable long id) {
         try {
-            List<Product> products = storeService.getProductsInStore(id);
+            List<Product> products = productService.getProductsInStore(id);
             return ResponseEntity.ok(products);
         } catch (StoreNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);

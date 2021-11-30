@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import sep.webshopback.dtos.ProductDTO;
 import sep.webshopback.exceptions.ProductNotFoundException;
+import sep.webshopback.exceptions.StoreNotFoundException;
 import sep.webshopback.model.Product;
 import sep.webshopback.model.Store;
 import sep.webshopback.model.User;
@@ -87,4 +89,9 @@ public class ProductService {
 		Store store = storeRepository.findAll().stream().filter(s -> s.getOwner().getId() == user.getId()).findFirst().orElse(null);
 		return store;
 	}
+	
+	 public List<Product> getProductsInStore(long storeId) throws StoreNotFoundException {
+	        if (storeRepository.findById(storeId).isPresent()) return productRepository.findProductsByStoreId(storeId);
+	        throw new StoreNotFoundException();
+	    }
 }

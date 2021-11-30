@@ -33,11 +33,6 @@ public class StoreService {
         throw new StoreNotFoundException();
     }
 
-    public List<Product> getProductsInStore(long storeId) throws StoreNotFoundException {
-        if (storeRepository.findById(storeId).isPresent()) return productRepository.findProductsByStoreId(storeId);
-        throw new StoreNotFoundException();
-    }
-
     public String getStoreNameByOwnerId(long ownerId) throws StoreNotFoundException {
         Store store = storeRepository.findStoreByOwnerId(ownerId);
         if(store != null) return store.getName();
