@@ -3,16 +3,14 @@ package sep.webshopback.controllers;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import sep.webshopback.dtos.StoreDTO;
 import sep.webshopback.exceptions.StoreNotFoundException;
 import sep.webshopback.model.Product;
 import sep.webshopback.model.Store;
 import sep.webshopback.service.StoreService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -41,6 +39,26 @@ public class StoreController {
         try {
             List<Product> products = storeService.getProductsInStore(id);
             return ResponseEntity.ok(products);
+        } catch (StoreNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/name/{ownerId}")
+    public ResponseEntity<?> getStoreNameByOwnerId(@PathVariable long ownerId) {
+        try {
+            String name = storeService.getStoreNameByOwnerId(ownerId);
+            return ResponseEntity.ok(new StoreNameDTO(name));
+        } catch (StoreNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/name/{ownerId}")
+    public ResponseEntity<?> setStoreNameByOwnerId(@PathVariable long ownerId, @Valid @RequestBody StoreNameDTO name) {
+        try {
+            storeService.setStoreNameByOwnerId(ownerId, name.getName());
+            return ResponseEntity.ok("Store name is updated.");
         } catch (StoreNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }

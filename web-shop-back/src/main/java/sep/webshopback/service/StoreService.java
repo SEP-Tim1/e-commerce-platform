@@ -41,9 +41,23 @@ public class StoreService {
     }
 
     public List<Product> getProductsInStore(long storeId) throws StoreNotFoundException {
-        if(storeRepository.findById(storeId).isPresent()) return productRepository.findProductsByStoreId(storeId);
+        if (storeRepository.findById(storeId).isPresent()) return productRepository.findProductsByStoreId(storeId);
         throw new StoreNotFoundException();
     }
 
+    public String getStoreNameByOwnerId(long ownerId) throws StoreNotFoundException {
+        Store store = storeRepository.findStoreByOwnerId(ownerId);
+        if(store != null) return store.getName();
+        throw new StoreNotFoundException();
+    }
+
+    public void setStoreNameByOwnerId(long ownerId, String name) throws StoreNotFoundException {
+        Store store = storeRepository.findStoreByOwnerId(ownerId);
+        if(store != null) {
+            store.setName(name);
+            storeRepository.save(store);
+        } else
+            throw new StoreNotFoundException();
+    }
 
 }
