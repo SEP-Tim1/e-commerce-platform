@@ -3,12 +3,20 @@
     <button
       mat-icon-button
       class="example-icon"
+      (click)="homeButtonClick()"
       aria-label="Example icon-button with menu icon"
     >
       <mat-icon>store</mat-icon>
     </button>
     <span>Web Shop EMT</span>
     <span class="example-spacer"></span>
+    <button
+      mat-button
+      routerLink="update-info"
+      *ngIf="this.authService.isLoggedIn()"
+    >
+      Update Info
+    </button>
     <button
       matToolTip="Log Out"
       mat-icon-button

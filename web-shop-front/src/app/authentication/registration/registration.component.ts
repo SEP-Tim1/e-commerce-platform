@@ -58,7 +58,9 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this._auth.registerComponent = true;
+    if (this._auth.isLoggedIn()) {
+      this.router.navigate([this._auth.getRole().toLowerCase() + '-home']);
+    } else this._auth.registerComponent = true;
   }
 
   register() {

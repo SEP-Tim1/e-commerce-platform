@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from './authentication/service/auth.service';
 
 @Component({
@@ -9,5 +10,13 @@ import { AuthService } from './authentication/service/auth.service';
 export class AppComponent {
   title = 'web-shop-front';
 
-  constructor(public authService: AuthService) {}
+  constructor(public authService: AuthService, private router: Router) {}
+
+  homeButtonClick() {
+    if (this.authService.isLoggedIn()) {
+      this.router.navigate([
+        this.authService.getRole().toLowerCase() + '-home',
+      ]);
+    }
+  }
 }

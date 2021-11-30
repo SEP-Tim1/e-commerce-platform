@@ -3,8 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { RouteGuardService } from './authentication/authorization/route-guard.service';
 import { LoginComponent } from './authentication/login/login.component';
 import { RegistrationComponent } from './authentication/registration/registration.component';
+import { UpdateInfoComponent } from './authentication/update-info/update-info.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { SellerHomeComponent } from './seller-home/seller-home.component';
+import { SellerHomeComponent } from './seller/seller-home/seller-home.component';
 import { UserHomeComponent } from './user/user-home/user-home.component';
 
 const routes: Routes = [
@@ -20,6 +21,12 @@ const routes: Routes = [
     component: SellerHomeComponent,
     canActivate: [RouteGuardService],
     data: { expectedRoles: ['SELLER'] },
+  },
+  {
+    path: 'update-info',
+    component: UpdateInfoComponent,
+    canActivate: [RouteGuardService],
+    data: { expectedRoles: ['SELLER', 'USER'] },
   },
   { path: 'login', component: LoginComponent },
   { path: 'registration', component: RegistrationComponent },

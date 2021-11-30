@@ -16,8 +16,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { UserHomeComponent } from './user/user-home/user-home.component';
-import { SellerHomeComponent } from './seller-home/seller-home.component';
 import { MatSelectModule } from '@angular/material/select';
+import { SellerHomeComponent } from './seller/seller-home/seller-home.component';
+import { UpdateInfoComponent } from './authentication/update-info/update-info.component';
+
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptorService } from './authentication/authorization/auth-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -27,6 +31,7 @@ import { MatSelectModule } from '@angular/material/select';
     PageNotFoundComponent,
     UserHomeComponent,
     SellerHomeComponent,
+    UpdateInfoComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,8 +47,15 @@ import { MatSelectModule } from '@angular/material/select';
     MatIconModule,
     MatSelectModule,
     ReactiveFormsModule,
+    HttpClientModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

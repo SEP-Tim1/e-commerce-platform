@@ -6,6 +6,9 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { RegistrationDTO } from '../dto/RegistrationDTO';
+import { UserInfoDTO } from '../dto/UserInfoDTO';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -13,11 +16,13 @@ import { RegistrationDTO } from '../dto/RegistrationDTO';
 export class AuthService {
   loginUrl = environment.backend + '/auth/login';
   registrerUrl = environment.backend + '/auth/register';
+  getUserInfoUrl = environment.backend + '/auth/info';
+  updateInfoUrl = environment.backend + '/auth/update';
   helper = new JwtHelperService();
   loginComponent = false;
   registerComponent = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private _http: HttpClient) {}
 
   logIn(user: LoginDTO) {
     return axios.post(this.loginUrl, user, { responseType: 'text' });
@@ -25,6 +30,16 @@ export class AuthService {
 
   register(user: RegistrationDTO) {
     return axios.post(this.registrerUrl, user, { responseType: 'text' });
+  }
+
+  getInfo(): Observable<UserInfoDTO> {
+    return this._http.get<UserInfoDTO>(this.getUserInfoUrl);
+  }
+
+  updateInfo(user: UserInfoDTO) {
+    return this._http.post(this.updateInfoUrl, user, {
+      responseType: 'text',
+    });
   }
 
   isLoggedIn() {

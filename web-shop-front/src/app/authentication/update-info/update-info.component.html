@@ -1,0 +1,68 @@
+<div class="div1">
+  <mat-card class="card1">
+    <form (submit)="update()" #feedform="ngForm" style="width: 80%" novalidate>
+      <h2 style="text-align: center">Update Info</h2>
+
+      <div class="center">
+        <mat-form-field style="width: 100%">
+          <mat-label>First Name</mat-label>
+          <input
+            matInput
+            [(ngModel)]="dto.firstName"
+            maxlength="50"
+            name="firstName"
+            style="height: 40%"
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="center">
+        <mat-form-field style="width: 100%">
+          <mat-label>Last Name</mat-label>
+          <input
+            matInput
+            [(ngModel)]="dto.lastName"
+            maxlength="50"
+            name="lastName"
+            style="height: 40%"
+          />
+        </mat-form-field>
+      </div>
+      <div class="center">
+        <mat-form-field style="width: 100%">
+          <mat-label>Address</mat-label>
+          <input
+            name="address"
+            matInput
+            maxlength="200"
+            [(ngModel)]="dto.address"
+            style="height: 40%"
+          />
+        </mat-form-field>
+      </div>
+      <div class="center">
+        <mat-form-field style="width: 100%">
+          <mat-label>Phone</mat-label>
+          <input
+            name="phone"
+            matInput
+            maxlength="20"
+            [(ngModel)]="dto.phone"
+            style="height: 40%"
+          />
+        </mat-form-field>
+      </div>
+      <div style="text-align: center; margin-top: 50px">
+        <button
+          id="updateButton"
+          mat-raised-button
+          color="primary"
+          type="submit"
+          style="padding: 12px 32px; opacity: 120%"
+        >
+          Update
+        </button>
+      </div>
+    </form>
+  </mat-card>
+</div>
