@@ -1,0 +1,52 @@
+<div class="div1">
+  <mat-card class="card1">
+    <form (submit)="login()" #feedform="ngForm" style="width: 80%" novalidate>
+      <h2 style="text-align: center">Log in</h2>
+
+      <div class="center">
+        <mat-form-field style="width: 100%">
+          <mat-label>Username</mat-label>
+          <textarea
+            id="usernameInput"
+            #name="ngModel"
+            name="username"
+            matInput
+            required
+            cdkTextareaAutosize
+            [(ngModel)]="username"
+            style="height: 40%"
+          ></textarea>
+        </mat-form-field>
+      </div>
+      <div class="center">
+        <mat-form-field style="width: 100%">
+          <mat-label>Password</mat-label>
+          <input
+            id="passwordInput"
+            #name2="ngModel"
+            name="password"
+            type="password"
+            matInput
+            required
+            cdkTextareaAutosize
+            [(ngModel)]="password"
+            style="height: 40%"
+          />
+        </mat-form-field>
+      </div>
+
+      <div style="text-align: center; margin-top: 50px">
+        <button
+          id="loginButton"
+          [disabled]="name.invalid || name2.invalid"
+          mat-raised-button
+          color="primary"
+          type="submit"
+          style="padding: 12px 32px; opacity: 120%"
+        >
+          Log in
+        </button>
+      </div>
+    </form>
+  </mat-card>
+</div>
