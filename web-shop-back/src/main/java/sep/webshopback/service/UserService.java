@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import sep.webshopback.dtos.NewInfoDTO;
 import sep.webshopback.dtos.UserRegistrationDTO;
+import sep.webshopback.exceptions.EmailNotUniqueException;
+import sep.webshopback.exceptions.UsernameNotUniqueException;
 import sep.webshopback.model.User;
 import sep.webshopback.repositories.UserRepository;
 
@@ -26,7 +28,9 @@ public class UserService implements UserDetailsService {
         } else throw new UsernameNotFoundException("There is no user with username " + username);
     }
 
-    public User registration(UserRegistrationDTO newUser){
+    public User registration(UserRegistrationDTO newUser) throws EmailNotUniqueException, UsernameNotUniqueException {
+        validateEmail(newUser.getEmail());
+        validateUsername(newUser.getUsername());
         User user = new User(newUser.getUsername(), newUser.getPassword(), newUser.getEmail(), newUser.getRole());
         return userRepository.save(user);
     }
@@ -38,5 +42,15 @@ public class UserService implements UserDetailsService {
         user.setPhone(infoDTO.getPhone());
         user.setAddress(infoDTO.getAddress());
         userRepository.save(user);
+    }
+
+    private void validateEmail(String email) throws EmailNotUniqueException {
+        if (userRepository.findUserByEmail(email) != null)
+            throw new EmailNotUniqueException();
+    }
+
+    private void validateUsername(String username) throws UsernameNotUniqueException {
+        if (userRepository.findUserByUsername(username) != null)
+            throw new UsernameNotUniqueException();
     }
 }

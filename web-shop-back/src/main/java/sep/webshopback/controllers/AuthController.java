@@ -1,5 +1,6 @@
 package sep.webshopback.controllers;
 
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,12 +15,15 @@ import sep.webshopback.dtos.JwtDTO;
 import sep.webshopback.dtos.LoginDTO;
 import sep.webshopback.dtos.NewInfoDTO;
 import sep.webshopback.dtos.UserRegistrationDTO;
+import sep.webshopback.exceptions.EmailNotUniqueException;
+import sep.webshopback.exceptions.UsernameNotUniqueException;
 import sep.webshopback.model.User;
 import sep.webshopback.security.TokenUtils;
 import sep.webshopback.service.UserService;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.Map;
 
 @Validated
 @RestController
@@ -68,7 +72,12 @@ public class AuthController {
             User user = userService.registration(userDTO);
             return ResponseEntity.created(URI.create("/user/" + user.getId())).build();
         }
-        catch (Exception e) {
+        catch (UsernameNotUniqueException | EmailNotUniqueException e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "message", e.getMessage(),
+                    "cause", e.getCause().getMessage())
+            );
+        } catch (Exception e){
             return ResponseEntity.badRequest().body("Bad request.");
         }
     }
