@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import sep.webshopback.dtos.StoreDTO;
+import sep.webshopback.dtos.StoreNameDTO;
 import sep.webshopback.exceptions.StoreNotFoundException;
 import sep.webshopback.model.Product;
 import sep.webshopback.model.Store;
