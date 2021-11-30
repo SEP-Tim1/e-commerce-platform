@@ -33,7 +33,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   login() {
     const dto = new LoginDTO(this.username, this.password);
-    console.log(dto);
     this._auth
       .logIn(dto)
       .then((response) => {
@@ -47,7 +46,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
         if (decoded.role === 'USER') {
           this.router.navigate(['user-home']);
-          console.log(localStorage.getItem('token'));
         } else if (decoded.role === 'SELLER') {
           this.router.navigate(['seller-home']);
         } else {

@@ -8,7 +8,7 @@ import { RegistrationComponent } from './authentication/registration/registratio
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { MatInputModule } from '@angular/material/input';
@@ -17,6 +17,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { UserHomeComponent } from './user/user-home/user-home.component';
 import { SellerHomeComponent } from './seller-home/seller-home.component';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,8 @@ import { SellerHomeComponent } from './seller-home/seller-home.component';
     MatButtonModule,
     MatToolbarModule,
     MatIconModule,
+    MatSelectModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

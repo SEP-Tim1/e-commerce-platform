@@ -1,1 +1,86 @@
-<p>registration works!</p>
+<div
+  style="
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: rgb(255, 203, 233);
+  "
+>
+  <mat-card class="card1">
+    <form
+      (submit)="register()"
+      #feedform="ngForm"
+      style="width: 80%"
+      novalidate
+    >
+      <h2 style="text-align: center">Sign Up</h2>
+
+      <div class="center">
+        <mat-form-field style="width: 100%">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            [(ngModel)]="email"
+            name="email"
+            style="height: 40%"
+            [formControl]="emailControl"
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="center">
+        <mat-form-field style="width: 100%">
+          <mat-label>Username</mat-label>
+          <input
+            matInput
+            [(ngModel)]="username"
+            name="username"
+            style="height: 40%"
+            [formControl]="usernameControl"
+          />
+        </mat-form-field>
+      </div>
+      <div class="center">
+        <mat-form-field style="width: 100%">
+          <mat-label>Password</mat-label>
+          <input
+            name="password"
+            type="password"
+            matInput
+            [(ngModel)]="password"
+            style="height: 40%"
+            [formControl]="passwordControl"
+          />
+        </mat-form-field>
+      </div>
+      <div class="center">
+        <mat-form-field style="width: 100%">
+          <mat-label>Account type</mat-label>
+          <mat-select required [(ngModel)]="role" name="role">
+            <mat-option [value]="'USER'"> USER </mat-option>
+            <mat-option [value]="'SELLER'"> SELLER </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div style="text-align: center; margin-top: 50px">
+        <button
+          id="loginButton"
+          [disabled]="
+            !this.emailControl.valid ||
+            !this.passwordControl.valid ||
+            !this.usernameControl.valid
+          "
+          mat-raised-button
+          color="primary"
+          type="submit"
+          style="padding: 12px 32px; opacity: 120%"
+        >
+          Sign Up
+        </button>
+      </div>
+    </form>
+  </mat-card>
+</div>

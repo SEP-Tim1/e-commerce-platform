@@ -1,0 +1,20 @@
+.div1 {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.card1 {
+  margin-top: 10%;
+  width: 40%;
+  height: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: max-content;
+  padding-top: 20px;
+  opacity: 80%;
+}

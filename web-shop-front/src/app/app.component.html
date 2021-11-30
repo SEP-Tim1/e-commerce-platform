@@ -25,6 +25,20 @@
       >
     </button>
     <button
+      mat-button
+      routerLink="login"
+      *ngIf="!this.authService.isLoggedIn()"
+    >
+      Log In
+    </button>
+    <button
+      mat-button
+      routerLink="registration"
+      *ngIf="!this.authService.isLoggedIn()"
+    >
+      Sign Up
+    </button>
+    <button
       mat-icon-button
       class="example-icon favorite-icon"
       aria-label="Example icon-button with heart icon"

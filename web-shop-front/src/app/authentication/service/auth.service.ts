@@ -4,12 +4,15 @@ import axios from 'axios';
 
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
+import { RegistrationDTO } from '../dto/RegistrationDTO';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  loginUrl = 'http://localhost:8050/auth/login';
+  loginUrl = environment.backend + '/auth/login';
+  registrerUrl = environment.backend + '/auth/register';
   helper = new JwtHelperService();
   loginComponent = false;
   registerComponent = false;
@@ -18,6 +21,10 @@ export class AuthService {
 
   logIn(user: LoginDTO) {
     return axios.post(this.loginUrl, user, { responseType: 'text' });
+  }
+
+  register(user: RegistrationDTO) {
+    return axios.post(this.registrerUrl, user, { responseType: 'text' });
   }
 
   isLoggedIn() {
