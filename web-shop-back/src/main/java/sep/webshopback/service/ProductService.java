@@ -46,7 +46,7 @@ public class ProductService {
 	
 	public void createProduct(MultipartFile file, ProductDTO dto, User user) throws IOException {
 		String fileName = saveFile(file, storageDirectoryPath);
-		String fileDownloadUri = "media/content/" + fileName;
+		String fileDownloadUri = "storage/media-content/" + fileName;
 		System.out.println(fileDownloadUri);
 		
 		Product product = new Product();
