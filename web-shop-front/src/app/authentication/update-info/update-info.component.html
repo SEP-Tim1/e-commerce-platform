@@ -1,68 +1,123 @@
 <div class="div1">
   <mat-card class="card1">
-    <form (submit)="update()" #feedform="ngForm" style="width: 80%" novalidate>
-      <h2 style="text-align: center">Update Info</h2>
-
-      <div class="center">
-        <mat-form-field style="width: 100%">
-          <mat-label>First Name</mat-label>
-          <input
-            matInput
-            [(ngModel)]="dto.firstName"
-            maxlength="50"
-            name="firstName"
-            style="height: 40%"
-          />
-        </mat-form-field>
-      </div>
-
-      <div class="center">
-        <mat-form-field style="width: 100%">
-          <mat-label>Last Name</mat-label>
-          <input
-            matInput
-            [(ngModel)]="dto.lastName"
-            maxlength="50"
-            name="lastName"
-            style="height: 40%"
-          />
-        </mat-form-field>
-      </div>
-      <div class="center">
-        <mat-form-field style="width: 100%">
-          <mat-label>Address</mat-label>
-          <input
-            name="address"
-            matInput
-            maxlength="200"
-            [(ngModel)]="dto.address"
-            style="height: 40%"
-          />
-        </mat-form-field>
-      </div>
-      <div class="center">
-        <mat-form-field style="width: 100%">
-          <mat-label>Phone</mat-label>
-          <input
-            name="phone"
-            matInput
-            maxlength="20"
-            [(ngModel)]="dto.phone"
-            style="height: 40%"
-          />
-        </mat-form-field>
-      </div>
-      <div style="text-align: center; margin-top: 50px">
-        <button
-          id="updateButton"
-          mat-raised-button
-          color="primary"
-          type="submit"
-          style="padding: 12px 32px; opacity: 120%"
+    <div class="grid-container">
+      <div class="grid-item">
+        <form
+          (submit)="update()"
+          #feedform="ngForm"
+          style="width: 100%"
+          novalidate
         >
-          Update
-        </button>
+          <h2 style="text-align: center">Update Personal Info</h2>
+
+          <div class="center">
+            <mat-form-field style="width: 100%">
+              <mat-label>First Name</mat-label>
+              <input
+                matInput
+                [(ngModel)]="dto.firstName"
+                maxlength="50"
+                name="firstName"
+                style="height: 40%"
+              />
+            </mat-form-field>
+          </div>
+
+          <div class="center">
+            <mat-form-field style="width: 100%">
+              <mat-label>Last Name</mat-label>
+              <input
+                matInput
+                [(ngModel)]="dto.lastName"
+                maxlength="50"
+                name="lastName"
+                style="height: 40%"
+              />
+            </mat-form-field>
+          </div>
+          <div class="center">
+            <mat-form-field style="width: 100%">
+              <mat-label>Address</mat-label>
+              <input
+                name="address"
+                matInput
+                maxlength="200"
+                [(ngModel)]="dto.address"
+                style="height: 40%"
+              />
+            </mat-form-field>
+          </div>
+          <div class="center">
+            <mat-form-field style="width: 100%">
+              <mat-label>Phone</mat-label>
+              <input
+                name="phone"
+                matInput
+                maxlength="20"
+                [(ngModel)]="dto.phone"
+                style="height: 40%"
+              />
+            </mat-form-field>
+          </div>
+          <div style="text-align: center; margin-top: 15px; margin-bottom: 5px">
+            <button
+              id="updateButton"
+              mat-raised-button
+              color="primary"
+              type="submit"
+              style="padding: 8 3px"
+            >
+              Update Personal Info
+            </button>
+          </div>
+        </form>
       </div>
-    </form>
+      <div *ngIf="store" class="grid-item">
+        <mat-divider style="margin-top: 20px"></mat-divider>
+      </div>
+      <div *ngIf="store" class="grid-item" style="margin-top: 40px">
+        <form
+          (submit)="updateStoreName()"
+          #feedform="ngForm"
+          style="width: 100%"
+          novalidate
+        >
+          <div style="display: inline-block; width: 60%; margin-right: 10%">
+            <mat-form-field style="width: 100%">
+              <mat-label>Store Name</mat-label>
+              <input
+                matInput
+                maxlength="50"
+                name="store"
+                style="height: 40%"
+                minlength="2"
+                [(ngModel)]="storeName"
+                required
+              />
+            </mat-form-field>
+          </div>
+
+          <div
+            style="
+              text-align: right;
+              margin-top: 15px;
+              margin-bottom: 10px;
+              display: inline;
+            "
+          >
+            <button
+              id="nameButton"
+              mat-stroked-button
+              color="primary"
+              type="submit"
+              style="padding: 8 3px"
+              [disabled]="storeName.length < 2 || storeName.length > 50"
+            >
+              Update Store Name
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   </mat-card>
 </div>

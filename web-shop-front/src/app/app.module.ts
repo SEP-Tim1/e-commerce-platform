@@ -19,6 +19,9 @@ import { UserHomeComponent } from './user/user-home/user-home.component';
 import { MatSelectModule } from '@angular/material/select';
 import { SellerHomeComponent } from './seller/seller-home/seller-home.component';
 import { UpdateInfoComponent } from './authentication/update-info/update-info.component';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatListModule } from '@angular/material/list';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 import { NgImageSliderModule } from 'ng-image-slider';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -51,7 +54,10 @@ import { CreateProductComponent } from './seller/create-product/create-product.c
     MatSelectModule,
     ReactiveFormsModule,
     HttpClientModule,
-    NgImageSliderModule
+    NgImageSliderModule,
+    MatDividerModule,
+    MatListModule,
+    MatGridListModule,
   ],
   providers: [
     {
