@@ -15,13 +15,29 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
-import { UserHomeComponent } from './user/user-home/user-home.component';
 import { MatSelectModule } from '@angular/material/select';
 import { SellerHomeComponent } from './seller/seller-home/seller-home.component';
 import { UpdateInfoComponent } from './authentication/update-info/update-info.component';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatListModule } from '@angular/material/list';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatTableModule } from '@angular/material/table';
 
+import { NgImageSliderModule } from 'ng-image-slider';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptorService } from './authentication/authorization/auth-interceptor.service';
+import { CreateProductComponent } from './seller/create-product/create-product.component';
+import { ProductUpdateComponent } from './seller/product-update/product-update.component';
+import { StoreCardComponent } from './user/components/store-card/store-card.component';
+import { StoresPageComponent } from './user/pages/stores-page/stores-page.component';
+import { ProductCardComponent } from './user/components/product-card/product-card.component';
+import { StorePageComponent } from './user/pages/store-page/store-page.component';
+import { ShoppingCartsPageComponent } from './user/pages/shopping-carts-page/shopping-carts-page.component';
+import { ShoppingCartComponent } from './user/components/shopping-cart/shopping-cart.component';
+import { CheckoutFormComponent } from './user/components/checkout-form/checkout-form.component';
+import { CheckoutPageComponent } from './user/pages/checkout-page/checkout-page.component';
+import { PurchaseReportComponent } from './user/components/purchase-report/purchase-report.component';
+import { PurchasesPageComponent } from './user/pages/purchases-page/purchases-page.component';
 
 @NgModule({
   declarations: [
@@ -29,9 +45,20 @@ import { AuthInterceptorService } from './authentication/authorization/auth-inte
     LoginComponent,
     RegistrationComponent,
     PageNotFoundComponent,
-    UserHomeComponent,
     SellerHomeComponent,
     UpdateInfoComponent,
+    CreateProductComponent,
+    ProductUpdateComponent,
+    StoreCardComponent,
+    StoresPageComponent,
+    ProductCardComponent,
+    StorePageComponent,
+    ShoppingCartsPageComponent,
+    ShoppingCartComponent,
+    CheckoutFormComponent,
+    CheckoutPageComponent,
+    PurchaseReportComponent,
+    PurchasesPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -48,6 +75,11 @@ import { AuthInterceptorService } from './authentication/authorization/auth-inte
     MatSelectModule,
     ReactiveFormsModule,
     HttpClientModule,
+    NgImageSliderModule,
+    MatDividerModule,
+    MatListModule,
+    MatGridListModule,
+    MatTableModule
   ],
   providers: [
     {

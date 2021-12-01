@@ -1,0 +1,5 @@
+<mat-grid-list cols="3" rowHeight="300px">
+    <mat-grid-tile *ngFor="let store of stores">
+        <app-store-card [store]="store"></app-store-card>
+    </mat-grid-tile>
+</mat-grid-list>

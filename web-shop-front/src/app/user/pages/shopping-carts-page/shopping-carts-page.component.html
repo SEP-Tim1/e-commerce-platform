@@ -1,0 +1,3 @@
+<ng-container *ngFor="let cart of carts">
+    <app-shopping-cart [cart]="cart" (refresh)="onRefresh($event)"></app-shopping-cart>
+</ng-container>

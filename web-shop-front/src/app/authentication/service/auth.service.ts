@@ -9,6 +9,7 @@ import { RegistrationDTO } from '../dto/RegistrationDTO';
 import { UserInfoDTO } from '../dto/UserInfoDTO';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { StoreNameDTO } from '../dto/StoreNameDTO';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +19,7 @@ export class AuthService {
   registrerUrl = environment.backend + '/auth/register';
   getUserInfoUrl = environment.backend + '/auth/info';
   updateInfoUrl = environment.backend + '/auth/update';
+  getStoreNameUrl = environment.backend + '/store/name';
   helper = new JwtHelperService();
   loginComponent = false;
   registerComponent = false;
@@ -34,6 +36,16 @@ export class AuthService {
 
   getInfo(): Observable<UserInfoDTO> {
     return this._http.get<UserInfoDTO>(this.getUserInfoUrl);
+  }
+
+  getStoreNameInfo(id: number): Observable<StoreNameDTO> {
+    return this._http.get<StoreNameDTO>(
+      this.getStoreNameUrl + '/' + id.toString()
+    );
+  }
+
+  setStoreNameInfo(name: StoreNameDTO) {
+    return this._http.put(this.getStoreNameUrl, name);
   }
 
   updateInfo(user: UserInfoDTO) {

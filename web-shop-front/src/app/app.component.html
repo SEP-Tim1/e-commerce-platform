@@ -12,6 +12,20 @@
     <span class="example-spacer"></span>
     <button
       mat-button
+      routerLink="shopping-carts"
+      *ngIf="this.authService.getRole() === 'USER'"
+    >
+      Shopping Cart
+    </button>
+    <button
+      mat-button
+      routerLink="purchases"
+      *ngIf="this.authService.getRole() === 'SELLER'"
+    >
+      Purchases
+    </button>
+    <button
+      mat-button
       routerLink="update-info"
       *ngIf="this.authService.isLoggedIn()"
     >

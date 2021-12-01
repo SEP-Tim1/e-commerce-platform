@@ -1,0 +1,28 @@
+.name {
+    text-align: center;
+    font-size: 15pt;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.container {
+    width: 300px;
+    height: max-content;
+}
+
+button {
+    width: 60%;
+    margin-left: 20%;
+    margin-bottom: 10px;
+}
+
+img {
+    height: 100px;
+    display: block;
+    margin: auto;
+}
+
+p {
+    text-align: center;
+    margin-top: 20px;
+}
