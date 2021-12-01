@@ -2,34 +2,21 @@ package sep.webshopback.model;
 
 import javax.persistence.*;
 
-@Entity
-@Table(name = "product-quantity")
+@Embeddable
 public class ProductQuantity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
     @ManyToOne
     private Product product;
     @Column(name="quantity")
     private int quantity;
 
-    public ProductQuantity(long id, Product product, int quantity) {
-        this.id = id;
+    public ProductQuantity(Product product, int quantity) {
         this.product = product;
         this.quantity = quantity;
     }
 
     protected ProductQuantity() {
 
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public Product getProduct() {

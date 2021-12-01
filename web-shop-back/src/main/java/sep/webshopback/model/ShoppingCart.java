@@ -4,7 +4,6 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "shopping-carts")
 public class ShoppingCart {
 
     @Id
@@ -14,7 +13,7 @@ public class ShoppingCart {
     private User user;
     @ManyToOne
     private Store store;
-    @OneToMany(cascade = CascadeType.ALL)
+    @ElementCollection
     private List<ProductQuantity> products;
 
     public ShoppingCart(long id, User user, Store store, List<ProductQuantity> products) {

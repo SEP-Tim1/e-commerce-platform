@@ -1,5 +1,8 @@
 package sep.webshopback.dtos;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import sep.webshopback.model.Role;
 
 import javax.validation.Valid;
@@ -7,10 +10,14 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class UserRegistrationDTO {
 
     @NotNull
     @Size(min=2, max=20)
+    @Valid
     private String username;
 
     @NotNull
@@ -23,38 +30,4 @@ public class UserRegistrationDTO {
 
     @NotNull
     private Role role;
-
-    public UserRegistrationDTO(){}
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(@Valid String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
 }

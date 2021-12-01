@@ -7,11 +7,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ProductUserViewDTO {
+public class ProductQuantityDTO {
 
-    private long id;
-    private String name;
-    private float price;
-    private String imageUrl;
-    private boolean available;
+    private long productId;
+    private String productName;
+    private int quantity;
 }
