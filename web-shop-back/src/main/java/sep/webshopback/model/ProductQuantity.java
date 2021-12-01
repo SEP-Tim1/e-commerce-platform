@@ -3,7 +3,6 @@ package sep.webshopback.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "product_quantity")
 @Embeddable
 public class ProductQuantity {
 
