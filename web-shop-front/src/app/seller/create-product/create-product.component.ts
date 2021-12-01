@@ -36,19 +36,7 @@ export class CreateProductComponent implements OnInit {
       (response) => {
         this.openSnackBar('Created.', 'Ok');
       });
-      /*{
-      next : (data) => {
-        console.log('uslo')
-
-        let message = "New product is posted. ";
-       this.openSnackBar(message, "Okay");
-      },
-      error: (error) => {
-        console.log('greska')
-        this.openSnackBar(error.error.message, "Okay");
-      }
-    });*/
-  
+    
   }
 
   onFileSelected(event:any) {

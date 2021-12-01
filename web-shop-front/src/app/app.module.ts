@@ -20,6 +20,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { SellerHomeComponent } from './seller/seller-home/seller-home.component';
 import { UpdateInfoComponent } from './authentication/update-info/update-info.component';
 
+import { NgImageSliderModule } from 'ng-image-slider';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptorService } from './authentication/authorization/auth-interceptor.service';
 import { CreateProductComponent } from './seller/create-product/create-product.component';
@@ -50,6 +51,7 @@ import { CreateProductComponent } from './seller/create-product/create-product.c
     MatSelectModule,
     ReactiveFormsModule,
     HttpClientModule,
+    NgImageSliderModule
   ],
   providers: [
     {
