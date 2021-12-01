@@ -4,6 +4,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+import sep.webshopback.dtos.StoreBasicInfoDTO;
 import sep.webshopback.dtos.StoreDTO;
 import sep.webshopback.dtos.StoreNameDTO;
 import sep.webshopback.exceptions.StoreNotFoundException;
@@ -71,5 +73,22 @@ public class StoreController {
         }
     }
 
+    @GetMapping("/info")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<List<StoreBasicInfoDTO>> getAllBasicInfo() {
+        List<StoreBasicInfoDTO> stores = storeService.getAllBasicInfo();
+        return new ResponseEntity<>(stores, HttpStatus.OK);
+    }
+
+    @GetMapping("/info/{id}")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<StoreBasicInfoDTO> getBasicInfoById(@PathVariable long id) {
+        try {
+            StoreBasicInfoDTO store = storeService.getBasicInfoById(id);
+            return new ResponseEntity<>(store, HttpStatus.OK);
+        } catch (StoreNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
 }
 
