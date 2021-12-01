@@ -1,6 +1,7 @@
 package sep.webshopback.controllers;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +23,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import sep.webshopback.dtos.ProductDTO;
+import sep.webshopback.exceptions.StoreNotFoundException;
+import sep.webshopback.model.Product;
 import sep.webshopback.model.User;
 import sep.webshopback.service.ProductService;
 import sep.webshopback.service.StoreService;
@@ -58,6 +62,16 @@ public class ProductController {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
 		}
 		return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @GetMapping(value = "storesProducts")
+    @PreAuthorize("hasRole('SELLER')")
+    public ResponseEntity<List<Product>> getProductsForOwnerId() throws StoreNotFoundException{
+    	
+    	User authenticated = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	User user = userService.getById(authenticated.getId());
+        return new ResponseEntity<>(productService.getAllStoreProducts(user), HttpStatus.OK);
+
     }
     
 }

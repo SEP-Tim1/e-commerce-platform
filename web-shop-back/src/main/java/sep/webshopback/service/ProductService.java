@@ -94,4 +94,10 @@ public class ProductService {
 	        if (storeRepository.findById(storeId).isPresent()) return productRepository.findProductsByStoreId(storeId);
 	        throw new StoreNotFoundException();
 	    }
+	 
+	 public List<Product> getAllStoreProducts(User user) throws StoreNotFoundException {
+		Store store = storeRepository.findAll().stream().filter(s -> s.getOwner().getId() == user.getId()).findFirst().orElse(null);
+		List<Product> products = getProductsInStore(store.getId());
+		return products;
+	 }
 }
