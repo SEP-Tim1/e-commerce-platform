@@ -1,5 +1,6 @@
 package sep.webshopback.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -47,7 +48,9 @@ public class Purchase {
             products = new ArrayList<>();
         }
         PurchasedProductQuantity purchased = new PurchasedProductQuantity(
-            new ProductSnapshot(product.getProduct().getId(), product.getProduct().getPrice()),
+            new ProductSnapshot(
+                    product.getProduct().getName(),
+                    product.getProduct().getPrice()),
             product.getQuantity()
         );
         products.add(purchased);
