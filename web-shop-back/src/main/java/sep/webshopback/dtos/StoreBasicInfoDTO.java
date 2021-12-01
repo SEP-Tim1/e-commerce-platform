@@ -56,4 +56,12 @@ public class StoreBasicInfoDTO {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+    public List<ProductUserViewDTO> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<ProductUserViewDTO> products) {
+        this.products = products;
+    }
 }
