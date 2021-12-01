@@ -15,7 +15,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
-import { UserHomeComponent } from './user/user-home/user-home.component';
 import { MatSelectModule } from '@angular/material/select';
 import { SellerHomeComponent } from './seller/seller-home/seller-home.component';
 import { UpdateInfoComponent } from './authentication/update-info/update-info.component';
@@ -28,6 +27,10 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptorService } from './authentication/authorization/auth-interceptor.service';
 import { CreateProductComponent } from './seller/create-product/create-product.component';
 import { ProductUpdateComponent } from './seller/product-update/product-update.component';
+import { StoreCardComponent } from './user/components/store-card/store-card.component';
+import { StoresPageComponent } from './user/pages/stores-page/stores-page.component';
+import { ProductCardComponent } from './user/components/product-card/product-card.component';
+import { StorePageComponent } from './user/pages/store-page/store-page.component';
 
 @NgModule({
   declarations: [
@@ -35,11 +38,14 @@ import { ProductUpdateComponent } from './seller/product-update/product-update.c
     LoginComponent,
     RegistrationComponent,
     PageNotFoundComponent,
-    UserHomeComponent,
     SellerHomeComponent,
     UpdateInfoComponent,
     CreateProductComponent,
     ProductUpdateComponent,
+    StoreCardComponent,
+    StoresPageComponent,
+    ProductCardComponent,
+    StorePageComponent,
   ],
   imports: [
     BrowserModule,

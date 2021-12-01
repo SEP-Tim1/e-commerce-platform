@@ -1,0 +1,11 @@
+import { Product } from "./product";
+
+export class Store {
+    constructor(
+        public id: number,
+        public name: string,
+        public email: string,
+        public phoneNumber: string,
+        public products: Product[]
+    ) {}
+}

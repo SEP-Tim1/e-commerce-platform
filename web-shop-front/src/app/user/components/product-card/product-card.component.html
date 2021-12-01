@@ -1,0 +1,6 @@
+<div class="container mat-elevation-z8">
+    <p class="name">{{product?.name}}</p>
+    <img [src]="imagePath" alt="image">
+    <p>Price {{product?.price}}</p>
+    <button mat-raised-button color="primary" *ngIf="product?.available">Add to cart</button>
+</div>

@@ -1,0 +1,8 @@
+<h1>{{store?.name}}</h1>
+<h2>E-mail: {{store?.email}}</h2>
+<h2>Phone number: {{store?.phoneNumber}}</h2>
+<mat-grid-list cols="3" rowHeight="300px">
+    <mat-grid-tile *ngFor="let product of store?.products">
+        <app-product-card [product]="product"></app-product-card>
+    </mat-grid-tile>
+</mat-grid-list>

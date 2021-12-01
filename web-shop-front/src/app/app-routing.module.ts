@@ -8,13 +8,14 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { CreateProductComponent } from './seller/create-product/create-product.component';
 import { ProductUpdateComponent } from './seller/product-update/product-update.component';
 import { SellerHomeComponent } from './seller/seller-home/seller-home.component';
-import { UserHomeComponent } from './user/user-home/user-home.component';
+import { StorePageComponent } from './user/pages/store-page/store-page.component';
+import { StoresPageComponent } from './user/pages/stores-page/stores-page.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
   {
     path: 'user-home',
-    component: UserHomeComponent,
+    component: StoresPageComponent,
     canActivate: [RouteGuardService],
     data: { expectedRoles: ['USER'] },
   },
@@ -40,6 +41,12 @@ const routes: Routes = [
     component: UpdateInfoComponent,
     canActivate: [RouteGuardService],
     data: { expectedRoles: ['SELLER', 'USER'] },
+  },
+  {
+    path: 'store/:id',
+    component: StorePageComponent,
+    canActivate: [RouteGuardService],
+    data: { expectedRoles: ['USER']}
   },
   { path: 'login', component: LoginComponent },
   { path: 'registration', component: RegistrationComponent },

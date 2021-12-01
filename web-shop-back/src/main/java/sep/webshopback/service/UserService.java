@@ -9,7 +9,9 @@ import sep.webshopback.dtos.NewInfoDTO;
 import sep.webshopback.dtos.UserRegistrationDTO;
 import sep.webshopback.exceptions.EmailNotUniqueException;
 import sep.webshopback.exceptions.UsernameNotUniqueException;
+import sep.webshopback.model.Store;
 import sep.webshopback.model.User;
+import sep.webshopback.repositories.StoreRepository;
 import sep.webshopback.repositories.UserRepository;
 
 import javax.validation.Valid;
@@ -18,7 +20,9 @@ import javax.validation.Valid;
 public class UserService implements UserDetailsService {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
+    @Autowired
+    private StoreRepository storeRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -32,7 +36,10 @@ public class UserService implements UserDetailsService {
         validateEmail(newUser.getEmail());
         validateUsername(newUser.getUsername());
         User user = new User(newUser.getUsername(), newUser.getPassword(), newUser.getEmail(), newUser.getRole());
-        return userRepository.save(user);
+        user = userRepository.save(user);
+        Store store = new Store("initial name", user);
+        storeRepository.save(store);
+        return user;
     }
 
     public void updateInfo(@Valid NewInfoDTO infoDTO, long id) {

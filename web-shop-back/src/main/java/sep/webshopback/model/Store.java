@@ -38,6 +38,12 @@ public class Store {
         this.owner = owner;
     }
 
+    public Store(String name, User owner) {
+        this.name = name;
+        this.products = new ArrayList<>();
+        this.owner = owner;
+    }
+
     public void decreaseQuantity(Product product, int quantity) throws ProductNotFoundException, ProductNotInStockException {
         Product prod = products.stream().filter(p -> p.getId() == product.getId())
                 .findFirst().orElse(null);
