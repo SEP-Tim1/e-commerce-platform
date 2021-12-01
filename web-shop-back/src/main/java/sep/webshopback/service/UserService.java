@@ -9,6 +9,7 @@ import sep.webshopback.dtos.NewInfoDTO;
 import sep.webshopback.dtos.UserRegistrationDTO;
 import sep.webshopback.exceptions.EmailNotUniqueException;
 import sep.webshopback.exceptions.UsernameNotUniqueException;
+import sep.webshopback.model.Role;
 import sep.webshopback.model.Store;
 import sep.webshopback.model.User;
 import sep.webshopback.repositories.StoreRepository;
@@ -37,6 +38,9 @@ public class UserService implements UserDetailsService {
         validateUsername(newUser.getUsername());
         User user = new User(newUser.getUsername(), newUser.getPassword(), newUser.getEmail(), newUser.getRole());
         user = userRepository.save(user);
+        if (user.getRole() == Role.USER) {
+            return user;
+        }
         Store store = new Store("initial name", user);
         storeRepository.save(store);
         return user;
