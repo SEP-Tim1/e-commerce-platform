@@ -3,4 +3,5 @@
     <img [src]="imagePath" alt="image">
     <p>Price {{product?.price}}</p>
     <button mat-raised-button color="primary" *ngIf="product?.available" (click)="addToCart()">Add to cart</button>
+    <button mat-raised-button color="primary" disabled *ngIf="!product?.available" (click)="addToCart()">Not available</button>
 </div>

@@ -47,5 +47,5 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
       <p class="total">Total price: {{cart?.total}}</p>
-      <button mat-raised-button color="primary" class="checkout">Proceed to checkout</button>
+      <button mat-raised-button color="primary" class="checkout" (click)="proceed()">Proceed to checkout</button>
 </div>

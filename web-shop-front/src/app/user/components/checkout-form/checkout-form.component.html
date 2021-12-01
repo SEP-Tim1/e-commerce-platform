@@ -1,0 +1,93 @@
+<div class="div1">
+    <mat-card class="card1">
+      <div class="grid-container">
+        <div class="grid-item">
+          <form
+            (submit)="pay()"
+            #feedform="ngForm"
+            style="width: 100%"
+            novalidate
+          >
+            <h2 style="text-align: center">Enter your contact information</h2>
+  
+            <div class="center">
+              <mat-form-field style="width: 100%">
+                <mat-label>Name</mat-label>
+                <input
+                  matInput
+                  [(ngModel)]="dto.name"
+                  maxlength="50"
+                  name="firstName"
+                  style="height: 40%"
+                />
+              </mat-form-field>
+            </div>
+  
+            <div class="center">
+              <mat-form-field style="width: 100%">
+                <mat-label>Surname</mat-label>
+                <input
+                  matInput
+                  [(ngModel)]="dto.surname"
+                  maxlength="50"
+                  name="lastName"
+                  style="height: 40%"
+                />
+              </mat-form-field>
+            </div>
+
+            <div class="center">
+              <mat-form-field style="width: 100%">
+                <mat-label>Address</mat-label>
+                <input
+                  name="address"
+                  matInput
+                  maxlength="200"
+                  [(ngModel)]="dto.address"
+                  style="height: 40%"
+                />
+              </mat-form-field>
+            </div>
+
+            <div class="center">
+              <mat-form-field style="width: 100%">
+                <mat-label>Phone</mat-label>
+                <input
+                  name="phone"
+                  matInput
+                  maxlength="20"
+                  [(ngModel)]="dto.phoneNumber"
+                  style="height: 40%"
+                />
+              </mat-form-field>
+            </div>
+
+            <div class="center">
+                <mat-form-field style="width: 100%">
+                  <mat-label>E-mail</mat-label>
+                  <input
+                    name="email"
+                    matInput
+                    maxlength="20"
+                    [(ngModel)]="dto.email"
+                    style="height: 40%"
+                  />
+                </mat-form-field>
+            </div>
+
+            <div style="text-align: center; margin-top: 15px; margin-bottom: 5px">
+              <button
+                id="payButton"
+                mat-raised-button
+                color="primary"
+                type="submit"
+                style="padding: 8 3px"
+              >
+                Pay
+              </button>
+            </div>
+          </form>
+        </div>
+        </div>
+    </mat-card>
+  </div>

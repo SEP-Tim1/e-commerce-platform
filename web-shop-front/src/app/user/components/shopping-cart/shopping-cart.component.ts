@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { CartService } from 'src/app/service/cart.service';
 import { ProductQuantity } from '../../dto/product-quantity';
 import { QuantityChange } from '../../dto/quantity-change';
@@ -11,7 +12,7 @@ import { ShoppingCart } from '../../dto/shopping-cart';
 })
 export class ShoppingCartComponent implements OnInit {
 
-  constructor(private service: CartService) { }
+  constructor(private service: CartService, private router: Router) { }
 
   @Input() cart: ShoppingCart | null = null;
   @Output() refresh = new EventEmitter<boolean>();
@@ -46,5 +47,9 @@ export class ShoppingCartComponent implements OnInit {
     this.service.removeFromCart(productId).subscribe(
       _ => this.refresh.emit(true)
     )
+  }
+
+  proceed() {
+    this.router.navigate(['checkout/' + this.cart?.id])
   }
 }

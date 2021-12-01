@@ -34,6 +34,8 @@ import { ProductCardComponent } from './user/components/product-card/product-car
 import { StorePageComponent } from './user/pages/store-page/store-page.component';
 import { ShoppingCartsPageComponent } from './user/pages/shopping-carts-page/shopping-carts-page.component';
 import { ShoppingCartComponent } from './user/components/shopping-cart/shopping-cart.component';
+import { CheckoutFormComponent } from './user/components/checkout-form/checkout-form.component';
+import { CheckoutPageComponent } from './user/pages/checkout-page/checkout-page.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +53,8 @@ import { ShoppingCartComponent } from './user/components/shopping-cart/shopping-
     StorePageComponent,
     ShoppingCartsPageComponent,
     ShoppingCartComponent,
+    CheckoutFormComponent,
+    CheckoutPageComponent,
   ],
   imports: [
     BrowserModule,
