@@ -17,7 +17,7 @@ public class PurchasedProductQuantity {
     @Embedded
     private ProductSnapshot product;
     @Column(name = "quantity")
-    private float quantity;
+    private int quantity;
 
     public float getTotal() {
         return quantity * product.getPrice();

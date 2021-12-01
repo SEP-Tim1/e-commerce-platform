@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Embeddable
 @AllArgsConstructor
@@ -13,8 +15,11 @@ import javax.persistence.Embeddable;
 @Data
 public class ProductSnapshot {
 
-    @Column(name = "productId")
-    private long productId;
+    @Column(length = 50, name = "name")
+    @NotBlank
+    private String name;
+
     @Column(name = "price")
+    @NotNull
     private float price;
 }
