@@ -1,4 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { CartService } from 'src/app/service/cart.service';
 import { environment } from 'src/environments/environment';
 import { Product } from '../../dto/product';
 
@@ -9,7 +11,7 @@ import { Product } from '../../dto/product';
 })
 export class ProductCardComponent implements OnInit {
 
-  constructor() { }
+  constructor(private service: CartService, private router: Router) { }
 
   @Input() product: Product | null = null;
   public imagePath: string = "";
@@ -20,5 +22,14 @@ export class ProductCardComponent implements OnInit {
 
   setImagePath() {
     this.imagePath = environment.backend +'/' + this.product?.imageUrl;
+  }
+
+  addToCart() {
+    if (this.product == null) {
+      return;
+    }
+    this.service.addToCart(this.product.id).subscribe(
+      _ => this.router.navigate(['shopping-carts'])
+    )
   }
 }

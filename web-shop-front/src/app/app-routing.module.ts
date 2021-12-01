@@ -8,6 +8,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { CreateProductComponent } from './seller/create-product/create-product.component';
 import { ProductUpdateComponent } from './seller/product-update/product-update.component';
 import { SellerHomeComponent } from './seller/seller-home/seller-home.component';
+import { ShoppingCartsPageComponent } from './user/pages/shopping-carts-page/shopping-carts-page.component';
 import { StorePageComponent } from './user/pages/store-page/store-page.component';
 import { StoresPageComponent } from './user/pages/stores-page/stores-page.component';
 
@@ -45,6 +46,12 @@ const routes: Routes = [
   {
     path: 'store/:id',
     component: StorePageComponent,
+    canActivate: [RouteGuardService],
+    data: { expectedRoles: ['USER']}
+  },
+  {
+    path: 'shopping-carts',
+    component: ShoppingCartsPageComponent,
     canActivate: [RouteGuardService],
     data: { expectedRoles: ['USER']}
   },

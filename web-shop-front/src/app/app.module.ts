@@ -21,6 +21,7 @@ import { UpdateInfoComponent } from './authentication/update-info/update-info.co
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatTableModule } from '@angular/material/table';
 
 import { NgImageSliderModule } from 'ng-image-slider';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -31,6 +32,8 @@ import { StoreCardComponent } from './user/components/store-card/store-card.comp
 import { StoresPageComponent } from './user/pages/stores-page/stores-page.component';
 import { ProductCardComponent } from './user/components/product-card/product-card.component';
 import { StorePageComponent } from './user/pages/store-page/store-page.component';
+import { ShoppingCartsPageComponent } from './user/pages/shopping-carts-page/shopping-carts-page.component';
+import { ShoppingCartComponent } from './user/components/shopping-cart/shopping-cart.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +49,8 @@ import { StorePageComponent } from './user/pages/store-page/store-page.component
     StoresPageComponent,
     ProductCardComponent,
     StorePageComponent,
+    ShoppingCartsPageComponent,
+    ShoppingCartComponent,
   ],
   imports: [
     BrowserModule,
@@ -66,6 +71,7 @@ import { StorePageComponent } from './user/pages/store-page/store-page.component
     MatDividerModule,
     MatListModule,
     MatGridListModule,
+    MatTableModule
   ],
   providers: [
     {

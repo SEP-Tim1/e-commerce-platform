@@ -1,0 +1,26 @@
+.container {
+    width: 100%;
+    height: max-content;
+    margin: 20px;
+}
+
+h2 {
+    text-align: center;
+    margin: 10px;
+}
+
+table {
+    width: 80%;
+    margin-left: 10%;
+}
+
+.total {
+    margin-left: 10%;
+    font-size: 15pt;
+    margin-top: 20px;
+}
+
+.checkout {
+    margin-left: 10%;
+    margin-top: 5px;
+}
