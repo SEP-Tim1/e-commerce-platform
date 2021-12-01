@@ -9,6 +9,7 @@ import { CreateProductComponent } from './seller/create-product/create-product.c
 import { ProductUpdateComponent } from './seller/product-update/product-update.component';
 import { SellerHomeComponent } from './seller/seller-home/seller-home.component';
 import { CheckoutPageComponent } from './user/pages/checkout-page/checkout-page.component';
+import { PurchasesPageComponent } from './user/pages/purchases-page/purchases-page.component';
 import { ShoppingCartsPageComponent } from './user/pages/shopping-carts-page/shopping-carts-page.component';
 import { StorePageComponent } from './user/pages/store-page/store-page.component';
 import { StoresPageComponent } from './user/pages/stores-page/stores-page.component';
@@ -61,6 +62,12 @@ const routes: Routes = [
     component: ShoppingCartsPageComponent,
     canActivate: [RouteGuardService],
     data: { expectedRoles: ['USER']}
+  },
+  {
+    path: 'purchases',
+    component: PurchasesPageComponent,
+    canActivate: [RouteGuardService],
+    data: { expectedRoles: ['SELLER']}
   },
   { path: 'login', component: LoginComponent },
   { path: 'registration', component: RegistrationComponent },

@@ -36,6 +36,8 @@ import { ShoppingCartsPageComponent } from './user/pages/shopping-carts-page/sho
 import { ShoppingCartComponent } from './user/components/shopping-cart/shopping-cart.component';
 import { CheckoutFormComponent } from './user/components/checkout-form/checkout-form.component';
 import { CheckoutPageComponent } from './user/pages/checkout-page/checkout-page.component';
+import { PurchaseReportComponent } from './user/components/purchase-report/purchase-report.component';
+import { PurchasesPageComponent } from './user/pages/purchases-page/purchases-page.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +57,8 @@ import { CheckoutPageComponent } from './user/pages/checkout-page/checkout-page.
     ShoppingCartComponent,
     CheckoutFormComponent,
     CheckoutPageComponent,
+    PurchaseReportComponent,
+    PurchasesPageComponent,
   ],
   imports: [
     BrowserModule,

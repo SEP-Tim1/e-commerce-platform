@@ -1,0 +1,22 @@
+.created {
+    text-align: center;
+    font-size: 15pt;
+    margin-top: 30px;
+    margin: 10px;
+}
+
+.contact {
+    margin: 10px;
+    text-align: center;
+    font-size: 15pt;
+}
+
+p {
+    margin-left: 40%;
+}
+
+table {
+    width: 60%;
+    margin-left: 20%;
+    margin-bottom: 20px;
+}

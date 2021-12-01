@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,9 +92,12 @@ public class ProductService {
 	}
 	
 	 public List<Product> getProductsInStore(long storeId) throws StoreNotFoundException {
-	        if (storeRepository.findById(storeId).isPresent()) return productRepository.findProductsByStoreId(storeId);
-	        throw new StoreNotFoundException();
-	    }
+		 Optional<Store> storeOpt = storeRepository.findById(storeId);
+		 if (!storeRepository.findById(storeId).isPresent()) {
+			 throw new StoreNotFoundException();
+		 }
+		 return storeOpt.get().getProducts();
+	}
 	 
 	 public List<Product> getAllStoreProducts(User user) throws StoreNotFoundException {
 		Store store = storeRepository.findAll().stream().filter(s -> s.getOwner().getId() == user.getId()).findFirst().orElse(null);

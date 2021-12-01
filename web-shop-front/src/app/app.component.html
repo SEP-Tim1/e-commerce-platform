@@ -19,6 +19,13 @@
     </button>
     <button
       mat-button
+      routerLink="purchases"
+      *ngIf="this.authService.getRole() === 'SELLER'"
+    >
+      Purchases
+    </button>
+    <button
+      mat-button
       routerLink="update-info"
       *ngIf="this.authService.isLoggedIn()"
     >
