@@ -3,7 +3,7 @@ package sep.webshopback.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "product-quantity")
+@Table(name = "product_quantity")
 public class ProductQuantity {
 
     @Id

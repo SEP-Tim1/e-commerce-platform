@@ -16,6 +16,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import sep.webshopback.dtos.ProductDTO;
+import sep.webshopback.dtos.ProductUpdateDTO;
 import sep.webshopback.exceptions.ProductNotFoundException;
 import sep.webshopback.exceptions.StoreNotFoundException;
 import sep.webshopback.model.Product;
@@ -99,5 +100,35 @@ public class ProductService {
 		Store store = storeRepository.findAll().stream().filter(s -> s.getOwner().getId() == user.getId()).findFirst().orElse(null);
 		List<Product> products = getProductsInStore(store.getId());
 		return products;
+	 }
+	 
+	 public void updateProductImage(MultipartFile file, ProductUpdateDTO dto) throws IOException, ProductNotFoundException {
+			String fileName = saveFile(file, storageDirectoryPath);
+			String fileDownloadUri = "storage/media-content/" + fileName;
+			System.out.println(fileDownloadUri);
+			
+			Product product = getProductById(dto.getId());
+			product.setName(dto.getName());
+			product.setPrice(Float.parseFloat(dto.getPrice()));
+			product.setQuantity(dto.getQuantity());
+			product.setImageUrl(fileDownloadUri);
+			productRepository.save(product);
+			
+		}
+	 
+	 public void updateProductInfo(Product product) throws ProductNotFoundException {
+		 Product oldProduct = getProductById(product.getId());
+		 oldProduct.setName(product.getName());
+		 oldProduct.setPrice(product.getPrice());
+		 oldProduct.setQuantity(product.getQuantity());
+		 productRepository.save(oldProduct);
+	 }
+	 
+	 public void deleteProduct(long productId, User user) throws ProductNotFoundException {
+		 Product product = getProductById(productId);
+		 Store store = getStoreByStoreOwner(user);
+		 store.getProducts().remove(product);
+		 storeRepository.save(store);
+		 productRepository.delete(product);
 	 }
 }
