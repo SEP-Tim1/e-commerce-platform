@@ -28,10 +28,10 @@ import sep.webshopback.repositories.StoreRepository;
 @Service
 public class ProductService {
 
-	private ProductRepository productRepository;
+	private final ProductRepository productRepository;
 	private StoreRepository storeRepository;
 	
-	@Value("${media.storage}")
+	@Value("${web-shop-back.storage}")
 	private String storageDirectoryPath;
 	
 	@Autowired
@@ -65,7 +65,7 @@ public class ProductService {
 	private String saveFile(MultipartFile file, String storageDirectoryPath) throws IOException {
 		String originalFileName = StringUtils.cleanPath(file.getOriginalFilename());
 		String extension = getFileExtension(originalFileName);
-		String fileName = UUID.randomUUID().toString() + "." + extension;
+		String fileName = UUID.randomUUID() + "." + extension;
 
 		System.out.println(fileName);
 
@@ -73,7 +73,7 @@ public class ProductService {
 		if(!Files.exists(storageDirectory)){
 			Files.createDirectories(storageDirectory);
 		}
-		Path destination = Paths.get(storageDirectory.toString() + File.separator + fileName);
+		Path destination = Paths.get(storageDirectory + File.separator + fileName);
 		Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
 		return fileName;
 	}
@@ -87,8 +87,7 @@ public class ProductService {
 	}
 
 	private Store getStoreByStoreOwner(User user) {
-		Store store = storeRepository.findAll().stream().filter(s -> s.getOwner().getId() == user.getId()).findFirst().orElse(null);
-		return store;
+		return storeRepository.findAll().stream().filter(s -> s.getOwner().getId() == user.getId()).findFirst().orElse(null);
 	}
 	
 	 public List<Product> getProductsInStore(long storeId) throws StoreNotFoundException {
@@ -98,8 +97,7 @@ public class ProductService {
 	 
 	 public List<Product> getAllStoreProducts(User user) throws StoreNotFoundException {
 		Store store = storeRepository.findAll().stream().filter(s -> s.getOwner().getId() == user.getId()).findFirst().orElse(null);
-		List<Product> products = getProductsInStore(store.getId());
-		return products;
+		return getProductsInStore(store.getId());
 	 }
 	 
 	 public void updateProductImage(MultipartFile file, ProductUpdateDTO dto) throws IOException, ProductNotFoundException {
@@ -131,4 +129,6 @@ public class ProductService {
 		 storeRepository.save(store);
 		 productRepository.delete(product);
 	 }
+
+
 }
