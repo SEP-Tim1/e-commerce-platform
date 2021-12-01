@@ -2,7 +2,6 @@ package sep.webshopback.model;
 
 import javax.persistence.*;
 
-@Entity
 @Embeddable
 public class ProductQuantity {
 
