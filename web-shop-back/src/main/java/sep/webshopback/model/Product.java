@@ -1,11 +1,19 @@
 package sep.webshopback.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import sep.webshopback.exceptions.ProductNotInStockException;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "products")
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_generator")
@@ -27,8 +35,6 @@ public class Product {
     @Column(name = "image_url")
     private String imageUrl;
 
-    public Product(){}
-
     public Product(String name, float price, long quantity) {
         this.name = name;
         this.price = price;
@@ -43,47 +49,14 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public float getPrice() {
-        return price;
-    }
-
-    public void setPrice(float price) {
-        this.price = price;
-    }
-
-    public long getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(long quantity) {
-        this.quantity = quantity;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
     public boolean isAvailable() {
         return quantity > 0;
+    }
+
+    public void decreaseQuantity(int decrease) throws ProductNotInStockException {
+        if (quantity < decrease) {
+            throw new ProductNotInStockException(name);
+        }
+        quantity -= decrease;
     }
 }

@@ -1,5 +1,11 @@
 package sep.webshopback.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import sep.webshopback.exceptions.ProductNotFoundException;
+import sep.webshopback.exceptions.ProductNotInStockException;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
@@ -7,6 +13,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "stores")
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class Store {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "store_generator")
@@ -23,39 +32,18 @@ public class Store {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private User owner;
 
-    public Store(){}
-
     public Store(String name, List<Product> products, User owner) {
         this.name = name;
         this.products = products;
         this.owner = owner;
     }
 
-    public long getId() { return this.id; }
-
-    public void setId(long id) { this.id = id; }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
-
-    public User getOwner() {
-        return owner;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
+    public void decreaseQuantity(Product product, int quantity) throws ProductNotFoundException, ProductNotInStockException {
+        Product prod = products.stream().filter(p -> p.getId() == product.getId())
+                .findFirst().orElse(null);
+        if (prod == null) {
+            throw new ProductNotFoundException();
+        }
+        prod.decreaseQuantity(quantity);
     }
 }
