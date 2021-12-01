@@ -6,12 +6,14 @@ public class ProductUserViewDTO {
     private String name;
     private float price;
     private String imageUrl;
+    private boolean available;
 
-    public ProductUserViewDTO(long id, String name, float price, String imageUrl) {
+    public ProductUserViewDTO(long id, String name, float price, String imageUrl, boolean available) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.imageUrl = imageUrl;
+        this.available = available;
     }
 
     public long getId() {
@@ -44,5 +46,13 @@ public class ProductUserViewDTO {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 }

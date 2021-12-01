@@ -75,7 +75,8 @@ public class StoreService {
                         p.getId(),
                         p.getName(),
                         p.getPrice(),
-                        p.getImageUrl()
+                        p.getImageUrl(),
+                        p.isAvailable()
                 )).collect(Collectors.toList())
         );
     }
