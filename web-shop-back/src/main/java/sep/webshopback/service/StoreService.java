@@ -80,4 +80,10 @@ public class StoreService {
                 )).collect(Collectors.toList())
         );
     }
+
+    public Store getByProductId(long productId) {
+        return storeRepository.findAll().stream().filter(s ->
+                s.getProducts().stream().anyMatch(p -> p.getId() == productId)).
+                findFirst().orElse(null);
+    }
 }

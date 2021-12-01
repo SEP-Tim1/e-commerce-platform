@@ -34,4 +34,8 @@ public class ProductQuantity {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    public float getTotal() {
+        return quantity * product.getPrice();
+    }
 }
