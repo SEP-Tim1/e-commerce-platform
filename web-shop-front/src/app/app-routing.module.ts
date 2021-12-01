@@ -6,6 +6,7 @@ import { RegistrationComponent } from './authentication/registration/registratio
 import { UpdateInfoComponent } from './authentication/update-info/update-info.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { CreateProductComponent } from './seller/create-product/create-product.component';
+import { ProductUpdateComponent } from './seller/product-update/product-update.component';
 import { SellerHomeComponent } from './seller/seller-home/seller-home.component';
 import { UserHomeComponent } from './user/user-home/user-home.component';
 
@@ -22,6 +23,11 @@ const routes: Routes = [
     component: SellerHomeComponent,
     canActivate: [RouteGuardService],
     data: { expectedRoles: ['SELLER'] },
+  },
+  {path: 'product-update/:id', 
+  component: ProductUpdateComponent,
+  canActivate: [RouteGuardService],
+  data: { expectedRoles: ['SELLER']}
   },
   {
     path: 'create-product',

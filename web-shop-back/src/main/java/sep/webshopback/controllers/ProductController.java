@@ -11,7 +11,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +25,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import sep.webshopback.dtos.ProductDTO;
+import sep.webshopback.dtos.ProductUpdateDTO;
+import sep.webshopback.exceptions.ProductNotFoundException;
 import sep.webshopback.exceptions.StoreNotFoundException;
 import sep.webshopback.model.Product;
 import sep.webshopback.model.User;
@@ -72,6 +76,57 @@ public class ProductController {
     	User user = userService.getById(authenticated.getId());
         return new ResponseEntity<>(productService.getAllStoreProducts(user), HttpStatus.OK);
 
+    }
+    
+    @GetMapping(value = "{id}")
+    @PreAuthorize("hasRole('SELLER')")
+    public ResponseEntity<Product> getProductById(@PathVariable long id){
+        try {
+			return new ResponseEntity<>(productService.getProductById(id), HttpStatus.OK);
+		} catch (ProductNotFoundException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		}
+    }
+    
+    @PostMapping(value="updateProductImage",  consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasRole('SELLER')")
+	public ResponseEntity<Void> updateProductImage(@RequestParam(name = "imageFile", required = false) MultipartFile data, @RequestParam(name = "post", required = false) String model) throws JsonMappingException, JsonProcessingException{
+    	    	
+        ObjectMapper mapper = new ObjectMapper();
+    	ProductUpdateDTO productDTO = mapper.readValue(model, ProductUpdateDTO.class);
+    	try {
+			productService.updateProductImage(data, productDTO);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+		} catch (ProductNotFoundException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @PostMapping(value = "updateProductInfo")
+    @PreAuthorize("hasRole('SELLER')")
+	public ResponseEntity<Void> updateProductInfo(@RequestBody Product product) {
+    	try {
+			productService.updateProductInfo(product);
+		} catch (ProductNotFoundException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		}
+    	return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @PostMapping(value = "deleteProduct")
+    @PreAuthorize("hasRole('SELLER')")
+	public ResponseEntity<Void> deleteProduct(@RequestBody long productId) {
+    	User authenticated = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	User user = userService.getById(authenticated.getId());
+    	try {
+			productService.deleteProduct(productId,user);
+		} catch (ProductNotFoundException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		}
+    	return new ResponseEntity<>(HttpStatus.OK);
     }
     
 }

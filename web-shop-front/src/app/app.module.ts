@@ -27,6 +27,7 @@ import { NgImageSliderModule } from 'ng-image-slider';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptorService } from './authentication/authorization/auth-interceptor.service';
 import { CreateProductComponent } from './seller/create-product/create-product.component';
+import { ProductUpdateComponent } from './seller/product-update/product-update.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { CreateProductComponent } from './seller/create-product/create-product.c
     SellerHomeComponent,
     UpdateInfoComponent,
     CreateProductComponent,
+    ProductUpdateComponent,
   ],
   imports: [
     BrowserModule,
