@@ -12,6 +12,7 @@ import java.util.List;
 public class ShoppingCartDTO {
 
     private long id;
-    private long storeName;
+    private String storeName;
     private List<ProductQuantityDTO> products;
+    private float total;
 }
