@@ -91,7 +91,7 @@
                 name="store"
                 style="height: 40%"
                 minlength="2"
-                [(ngModel)]="storeName"
+                [(ngModel)]="storeDto.name"
                 required
               />
             </mat-form-field>
@@ -111,12 +111,36 @@
               color="primary"
               type="submit"
               style="padding: 8 3px"
-              [disabled]="storeName.length < 2 || storeName.length > 50"
+              [disabled]="storeDto.name.length < 2 || storeDto.name.length > 50"
             >
               Update Store Name
             </button>
           </div>
         </form>
+      </div>
+
+
+      <div *ngIf="store" class="grid-item">
+        <mat-divider style="margin-top: 20px"></mat-divider>
+      </div>
+      <div *ngIf="store" class="grid-item" style="margin-top: 40px">
+        <div *ngIf="storeDto.apiToken === null">
+          <button mat-raised-button (click)="storeDto.apiToken = '';">Enable payment services</button>
+        </div>
+        <div *ngIf="storeDto.apiToken !== null">
+          <mat-form-field style="width: 100%">
+            <mat-label>API Token</mat-label>
+            <input
+              matInput
+              name="token"
+              style="height: 40%"
+              [(ngModel)]="storeDto.apiToken"
+              required
+            />
+          </mat-form-field>
+          <button mat-raised-button color="primary" (click)="setToken()">Save</button>
+          <button mat-raised-button (click)="disable()" style="margin-left: 10px;">Disable</button>
+        </div>
       </div>
     </div>
   </mat-card>
