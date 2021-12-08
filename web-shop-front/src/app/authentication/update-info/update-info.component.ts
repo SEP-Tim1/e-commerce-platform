@@ -12,7 +12,7 @@ import { StoreNameDTO } from '../dto/StoreNameDTO';
 export class UpdateInfoComponent implements OnInit {
   dto: UserInfoDTO = new UserInfoDTO('', '', '', '');
   store = false;
-  storeName = '';
+  storeDto: StoreNameDTO = new StoreNameDTO('', null);
   constructor(private _snackBar: MatSnackBar, private _auth: AuthService) {}
 
   ngOnInit(): void {
@@ -25,7 +25,7 @@ export class UpdateInfoComponent implements OnInit {
         this._auth
           .getStoreNameInfo(this._auth.getId())
           .subscribe((response) => {
-            this.storeName = response.name;
+            this.storeDto = response;
           });
       }
     });
@@ -39,11 +39,26 @@ export class UpdateInfoComponent implements OnInit {
 
   updateStoreName() {
     this._auth
-      .setStoreNameInfo(new StoreNameDTO(this.storeName))
+      .setStoreNameInfo({name: this.storeDto.name})
       .subscribe((response) => {
         console.log(response);
         this.openSnackBar('Store name updated.', 'Ok');
       });
+  }
+
+  setToken() {
+    this._auth.setToken(this.storeDto.apiToken).subscribe(
+      _ => this.openSnackBar("Token successfully set", "Ok")
+    )
+  }
+
+  disable() {
+    this._auth.deleteToken().subscribe(
+      _ => {
+        this.openSnackBar("You disabled payment services", "Ok");
+        this.storeDto.apiToken = null;
+      }
+    )
   }
 
   openSnackBar(message: string, action: string) {

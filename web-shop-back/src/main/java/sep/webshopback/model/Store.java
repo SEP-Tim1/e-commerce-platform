@@ -32,6 +32,9 @@ public class Store {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private User owner;
 
+    @Column
+    private String apiToken;
+
     public Store(String name, List<Product> products, User owner) {
         this.name = name;
         this.products = products;

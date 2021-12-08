@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import sep.webshopback.dtos.StoreBasicInfoDTO;
 import sep.webshopback.dtos.StoreDTO;
+import sep.webshopback.dtos.StoreInfoDTO;
 import sep.webshopback.dtos.StoreNameDTO;
 import sep.webshopback.exceptions.StoreNotFoundException;
 import sep.webshopback.model.Product;
@@ -56,7 +57,8 @@ public class StoreController {
     public ResponseEntity<?> getStoreNameByOwnerId(@PathVariable long ownerId) {
         try {
             String name = storeService.getStoreNameByOwnerId(ownerId);
-            return ResponseEntity.ok(new StoreNameDTO(name));
+            String token = storeService.getStoreTokenByOwnerId(ownerId);
+            return ResponseEntity.ok(new StoreInfoDTO(name, token));
         } catch (StoreNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
@@ -68,6 +70,28 @@ public class StoreController {
         try {
             storeService.setStoreNameByOwnerId(UserToken.getUserIdFromToken(), name.getName());
             return ResponseEntity.ok("Store name is updated.");
+        } catch (StoreNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/token/{token}")
+    @PreAuthorize("hasRole('SELLER')")
+    public ResponseEntity<?> setStoreTokenByOwnerId(@PathVariable String token) {
+        try {
+            storeService.setStoreTokenByOwnerId(UserToken.getUserIdFromToken(), token);
+            return ResponseEntity.ok("Store token is set.");
+        } catch (StoreNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/token")
+    @PreAuthorize("hasRole('SELLER')")
+    public ResponseEntity<?> deleteStoreTokenByOwnerId() {
+        try {
+            storeService.setStoreTokenByOwnerId(UserToken.getUserIdFromToken(), null);
+            return ResponseEntity.ok("Store token is deleted.");
         } catch (StoreNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }

@@ -20,6 +20,7 @@ export class AuthService {
   getUserInfoUrl = environment.backend + '/auth/info';
   updateInfoUrl = environment.backend + '/auth/update';
   getStoreNameUrl = environment.backend + '/store/name';
+  setTokenUrl = environment.backend + '/store/token';
   helper = new JwtHelperService();
   loginComponent = false;
   registerComponent = false;
@@ -44,8 +45,16 @@ export class AuthService {
     );
   }
 
-  setStoreNameInfo(name: StoreNameDTO) {
+  setStoreNameInfo(name: any) {
     return this._http.put(this.getStoreNameUrl, name);
+  }
+
+  setToken(token: string | null) {
+    return this._http.put(this.setTokenUrl + '/' + token, null, { responseType: 'text' });
+  }
+
+  deleteToken() {
+    return this._http.delete(this.setTokenUrl, { responseType: 'text' });
   }
 
   updateInfo(user: UserInfoDTO) {

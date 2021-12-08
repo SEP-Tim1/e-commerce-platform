@@ -44,10 +44,25 @@ public class StoreService {
         throw new StoreNotFoundException();
     }
 
+    public String getStoreTokenByOwnerId(long ownerId) throws StoreNotFoundException {
+        Store store = storeRepository.findStoreByOwnerId(ownerId);
+        if(store != null) return store.getApiToken();
+        throw new StoreNotFoundException();
+    }
+
     public void setStoreNameByOwnerId(long ownerId, String name) throws StoreNotFoundException {
         Store store = storeRepository.findStoreByOwnerId(ownerId);
         if(store != null) {
             store.setName(name);
+            storeRepository.save(store);
+        } else
+            throw new StoreNotFoundException();
+    }
+
+    public void setStoreTokenByOwnerId(long ownerId, String token) throws StoreNotFoundException {
+        Store store = storeRepository.findStoreByOwnerId(ownerId);
+        if(store != null) {
+            store.setApiToken(token);
             storeRepository.save(store);
         } else
             throw new StoreNotFoundException();
