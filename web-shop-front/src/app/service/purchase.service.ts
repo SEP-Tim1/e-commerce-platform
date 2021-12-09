@@ -13,6 +13,8 @@ export class PurchaseService {
   constructor(private _http: HttpClient) { }
 
   private purchaseBaseUrl = environment.backend + '/purchase';
+  private purchaseSuccess = this.purchaseBaseUrl + '/success';
+  private purchaseFailure = this.purchaseBaseUrl + '/failure';
 
   public purchase(cartId: number, details: PurchaseDetails): Observable<any> {
     return this._http.post(this.purchaseBaseUrl + '/' + cartId, details);
@@ -20,5 +22,13 @@ export class PurchaseService {
 
   public getAll(): Observable<Purchase[]> {
     return this._http.get<Purchase[]>(this.purchaseBaseUrl);
+  }
+
+  public success(purchaseId: number) {
+    return this._http.put(this.purchaseSuccess + '/' + purchaseId, null);
+  }
+
+  public failure(purchaseId: number) {
+    return this._http.put(this.purchaseFailure + '/' + purchaseId, null);
   }
 }

@@ -9,10 +9,13 @@ import { CreateProductComponent } from './seller/create-product/create-product.c
 import { ProductUpdateComponent } from './seller/product-update/product-update.component';
 import { SellerHomeComponent } from './seller/seller-home/seller-home.component';
 import { CheckoutPageComponent } from './user/pages/checkout-page/checkout-page.component';
+import { ErrorPageComponent } from './user/pages/error-page/error-page.component';
+import { FailurePageComponent } from './user/pages/failure-page/failure-page.component';
 import { PurchasesPageComponent } from './user/pages/purchases-page/purchases-page.component';
 import { ShoppingCartsPageComponent } from './user/pages/shopping-carts-page/shopping-carts-page.component';
 import { StorePageComponent } from './user/pages/store-page/store-page.component';
 import { StoresPageComponent } from './user/pages/stores-page/stores-page.component';
+import { SuccessPageComponent } from './user/pages/success-page/success-page.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -70,8 +73,11 @@ const routes: Routes = [
     data: { expectedRoles: ['SELLER']}
   },
   { path: 'login', component: LoginComponent },
-  { path: 'registration', component: RegistrationComponent },
-  { path: '**', component: PageNotFoundComponent },
+  { path: 'registration', component: RegistrationComponent,  },
+  { path: 'success/:id', component: SuccessPageComponent, data: { expectedRoles: ['USER'] } },
+  { path: 'failure/:id', component: FailurePageComponent, data: { expectedRoles: ['USER'] } },
+  { path: 'error/:id', component: ErrorPageComponent, data: { expectedRoles: ['USER'] } },
+  { path: '**', component: PageNotFoundComponent, data: { expectedRoles: ['USER'] } },
 ];
 
 @NgModule({

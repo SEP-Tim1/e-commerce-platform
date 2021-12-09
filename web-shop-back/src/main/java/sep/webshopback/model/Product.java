@@ -59,4 +59,11 @@ public class Product {
         }
         quantity -= decrease;
     }
+
+    public void increaseQuantity(int increase) {
+        if (increase < 1) {
+            return;
+        }
+        quantity += increase;
+    }
 }

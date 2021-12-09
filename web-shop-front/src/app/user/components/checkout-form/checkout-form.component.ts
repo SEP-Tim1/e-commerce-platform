@@ -3,6 +3,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/authentication/service/auth.service';
 import { PurchaseService } from 'src/app/service/purchase.service';
+import { environment } from 'src/environments/environment';
 import { PurchaseDetails } from '../../dto/purchase-details';
 
 @Component({
@@ -24,9 +25,8 @@ export class CheckoutFormComponent implements OnInit {
 
   pay() {
     this.service.purchase(this.cartId, this.dto).subscribe(
-      _ => {
-        this.displayMessage("Your purchase was successful!");
-        this.router.navigate(['shopping-carts']);
+      requestId => {
+        window.location.href = environment.psp + '/payment/' + requestId
       },
       error => {
         this.displayMessage(error.error.message);

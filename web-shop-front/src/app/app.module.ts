@@ -38,6 +38,9 @@ import { CheckoutFormComponent } from './user/components/checkout-form/checkout-
 import { CheckoutPageComponent } from './user/pages/checkout-page/checkout-page.component';
 import { PurchaseReportComponent } from './user/components/purchase-report/purchase-report.component';
 import { PurchasesPageComponent } from './user/pages/purchases-page/purchases-page.component';
+import { SuccessPageComponent } from './user/pages/success-page/success-page.component';
+import { FailurePageComponent } from './user/pages/failure-page/failure-page.component';
+import { ErrorPageComponent } from './user/pages/error-page/error-page.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +62,9 @@ import { PurchasesPageComponent } from './user/pages/purchases-page/purchases-pa
     CheckoutPageComponent,
     PurchaseReportComponent,
     PurchasesPageComponent,
+    SuccessPageComponent,
+    FailurePageComponent,
+    ErrorPageComponent,
   ],
   imports: [
     BrowserModule,

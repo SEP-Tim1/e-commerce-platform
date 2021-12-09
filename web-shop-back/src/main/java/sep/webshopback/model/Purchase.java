@@ -26,11 +26,14 @@ public class Purchase {
     private Store store;
     @ElementCollection
     private List<PurchasedProductQuantity> products;
+    @ManyToOne
+    private ShoppingCart cart;
 
-    public Purchase(PurchaseUserDetails userDetails, LocalDateTime created, Store store) {
+    public Purchase(PurchaseUserDetails userDetails, LocalDateTime created, Store store, ShoppingCart cart) {
         this.userDetails = userDetails;
         this.created = created;
         this.store = store;
+        this.cart = cart;
         this.products = new ArrayList<>();
     }
 

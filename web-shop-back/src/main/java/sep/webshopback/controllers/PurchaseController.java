@@ -44,4 +44,14 @@ public class PurchaseController {
         List<PurchaseDTO> result = service.getAll(authenticated.getId());
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    @PutMapping("success/{purchaseId}")
+    public void purchaseSuccessful(@PathVariable long purchaseId) {
+        service.purchaseSuccessful(purchaseId);
+    }
+
+    @PutMapping("failure/{purchaseId}")
+    public void purchaseUnsuccessful(@PathVariable long purchaseId) {
+        service.purchaseUnsuccessful(purchaseId);
+    }
 }
