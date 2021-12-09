@@ -2,8 +2,12 @@ package sep.webshopback.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sep.webshopback.client.PSPClient;
+import sep.webshopback.dtos.PaymentRequestDTO;
+import sep.webshopback.dtos.PaymentResponseDTO;
 import sep.webshopback.dtos.ProductQuantityDTO;
 import sep.webshopback.dtos.PurchaseDTO;
+import sep.webshopback.exceptions.PaymentUnsuccessfulException;
 import sep.webshopback.exceptions.ProductNotFoundException;
 import sep.webshopback.exceptions.ProductNotInStockException;
 import sep.webshopback.model.*;
@@ -27,21 +31,23 @@ public class PurchaseService {
     private UserRepository userRepository;
     @Autowired
     private ShoppingCartRepository cartRepository;
+    @Autowired
+    private PSPClient pspClient;
 
-    @Transactional(rollbackOn = {ProductNotFoundException.class, ProductNotInStockException.class})
-    public void purchase(long userId, long cartId, PurchaseUserDetails details) throws ProductNotFoundException, ProductNotInStockException {
+    @Transactional(rollbackOn = {ProductNotFoundException.class, ProductNotInStockException.class, PaymentUnsuccessfulException.class})
+    public long purchase(long userId, long cartId, PurchaseUserDetails details) throws ProductNotFoundException, ProductNotInStockException, PaymentUnsuccessfulException {
         Optional<User> userOpt = userRepository.findById(userId);
         if (!userOpt.isPresent()) {
-            return;
+            throw new ProductNotFoundException();
         }
         Optional<ShoppingCart> cartOpt = cartRepository.findById(cartId);
         if (!cartOpt.isPresent()) {
-            return;
+            throw new ProductNotFoundException();
         }
         User user = userOpt.get();
         ShoppingCart cart = cartOpt.get();
         if (user.getId() != cart.getUser().getId()) {
-            return;
+            throw new ProductNotFoundException();
         }
 
         for(ProductQuantity p : cart.getProducts()) {
@@ -55,11 +61,10 @@ public class PurchaseService {
         for(ProductQuantity p : cart.getProducts()) {
             purchase.addProduct(p);
         }
-        repository.save(purchase);
+        purchase = repository.save(purchase);
         cartRepository.delete(cart);
 
-        //preusmeri na placanje
-        //rollback svega ako je bilo koji korak neuspesan
+        return sendPaymentRequest(purchase).getRequestId();
     }
 
     public List<PurchaseDTO> getAll(long userId) {
@@ -79,5 +84,21 @@ public class PurchaseService {
                 .collect(Collectors.toList());
     }
 
-
+    private PaymentResponseDTO sendPaymentRequest(Purchase purchase) throws PaymentUnsuccessfulException {
+        PaymentRequestDTO dto = new PaymentRequestDTO(
+                purchase.getStore().getApiToken(),
+                purchase.getId(),
+                purchase.getCreated(),
+                purchase.getTotal(),
+                "",
+                "",
+                ""
+        );
+        try {
+            return pspClient.create(dto);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new PaymentUnsuccessfulException("Payment service could not be started");
+        }
+    }
 }

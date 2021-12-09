@@ -50,7 +50,7 @@ public class Purchase {
             new ProductSnapshot(
                     product.getProduct().getName(),
                     product.getProduct().getPrice()),
-            product.getQuantity()
+                product.getQuantity()
         );
         products.add(purchased);
     }
