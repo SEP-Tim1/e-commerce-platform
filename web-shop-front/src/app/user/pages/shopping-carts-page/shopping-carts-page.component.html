@@ -1,3 +1,12 @@
-<ng-container *ngFor="let cart of carts">
-    <app-shopping-cart [cart]="cart" (refresh)="onRefresh($event)"></app-shopping-cart>
-</ng-container>
+<div class="div1">
+  <div class="aaa">
+    <ng-container *ngFor="let cart of carts">
+      <mat-card style="width: 90%; margin-left: 5%; margin-bottom: 30px">
+        <app-shopping-cart
+          [cart]="cart"
+          (refresh)="onRefresh($event)"
+        ></app-shopping-cart>
+      </mat-card>
+    </ng-container>
+  </div>
+</div>

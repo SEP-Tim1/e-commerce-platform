@@ -1,7 +1,17 @@
 <div class="container mat-elevation-z8">
-    <p class="name">{{product?.name}}</p>
-    <img [src]="imagePath" alt="image">
-    <p>Price {{product?.price}}</p>
-    <button mat-raised-button color="primary" *ngIf="product?.available" (click)="addToCart()">Add to cart</button>
-    <button mat-raised-button color="primary" disabled *ngIf="!product?.available" (click)="addToCart()">Not available</button>
+  <p class="name">{{ product?.name }}</p>
+  <img [src]="imagePath" alt="image" />
+  <p style="color: gray">{{ product?.price }} RSD</p>
+  <button mat-raised-button *ngIf="product?.available" (click)="addToCart()">
+    Add to cart
+  </button>
+  <button
+    mat-raised-button
+    color="primary"
+    disabled
+    *ngIf="!product?.available"
+    (click)="addToCart()"
+  >
+    Not available
+  </button>
 </div>

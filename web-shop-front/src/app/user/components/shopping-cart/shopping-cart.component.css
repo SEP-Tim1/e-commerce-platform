@@ -1,26 +1,67 @@
 .container {
-    width: 100%;
-    height: max-content;
-    margin: 20px;
+  width: 100%;
+  height: max-content;
+  margin: 20px;
 }
 
 h2 {
-    text-align: center;
-    margin: 10px;
+  text-align: center;
+  margin: 10px;
+}
+
+.milijana {
+  font-weight: 300;
+  margin-bottom: 30px;
 }
 
 table {
-    width: 80%;
-    margin-left: 10%;
+  width: 80%;
+  margin-left: 10%;
 }
 
 .total {
-    margin-left: 10%;
-    font-size: 15pt;
-    margin-top: 20px;
+  text-align: right;
+  margin-right: 11%;
+  font-size: 15pt;
+  margin-top: 30px;
+  font-weight: 300;
 }
 
 .checkout {
-    margin-left: 10%;
-    margin-top: 5px;
+  margin-left: 10%;
+  margin-top: 5px;
+}
+
+.mat-column-quantity {
+  text-align: center;
+  width: 10%;
+}
+
+.mat-column-price {
+  text-align: center;
+}
+
+.mat-column-total {
+  text-align: center;
+  width: 20%;
+}
+
+.mat-column-name {
+  text-align: center;
+  width: 30%;
+}
+
+.mat-column-dec-button {
+  text-align: center;
+  width: 5%;
+}
+
+.mat-column-inc-button {
+  text-align: center;
+  width: 5%;
+}
+
+.mat-column-remove-button {
+  text-align: center;
+  width: 5%;
 }

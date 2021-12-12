@@ -1,5 +1,26 @@
-<h1 style="text-align: center; margin: 20px">Failure: Purchase unsuccessful</h1>
-<h3 style="text-align: center; margin: 10px">{{ message }}</h3>
-<button mat-raised-button routerLink="" style="width: 10%; margin-left: 40%">
-  Back
-</button>
+<div class="div1">
+  <div class="aaa">
+    <mat-card style="width: 90%; margin-left: 5%">
+      <h1 style="text-align: center; margin: 20px">
+        <b>Failure:</b> Purchase unsuccessful
+      </h1>
+      <h3
+        style="
+          text-align: center;
+          margin: 10px;
+          font-weight: 300;
+          font-size: 20px;
+        "
+      >
+        {{ message }}
+      </h3>
+      <button
+        mat-raised-button
+        routerLink=""
+        style="width: 20%; margin-top: 2%; margin-bottom: 3%; height: 50px"
+      >
+        Back
+      </button>
+    </mat-card>
+  </div>
+</div>

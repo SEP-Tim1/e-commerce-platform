@@ -1,28 +1,32 @@
 .name {
-    text-align: center;
-    font-size: 15pt;
-    padding-top: 10px;
-    padding-bottom: 10px;
+  text-align: center;
+  font-size: 15pt;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-weight: 300;
 }
 
 .container {
-    width: 300px;
-    height: max-content;
+  width: 300px;
+  height: max-content;
+  padding-bottom: 20px;
 }
 
 button {
-    width: 60%;
-    margin-left: 20%;
-    margin-bottom: 10px;
+  width: 60%;
+  margin-bottom: 10px;
+  background-color: rgb(235, 87, 148);
+  color: white;
+  font-size: larger;
 }
 
 img {
-    height: 100px;
-    display: block;
-    margin: auto;
+  height: 100px;
+  display: block;
+  margin: auto;
 }
 
 p {
-    text-align: center;
-    margin-top: 20px;
+  text-align: center;
+  margin-top: 20px;
 }

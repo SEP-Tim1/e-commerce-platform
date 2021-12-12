@@ -1,51 +1,78 @@
 <div class="container">
-    <h2>Shopping cart for store {{cart?.storeName}}</h2>
-    <table mat-table [dataSource]="products" class="mat-elevation-z8">
+  <h2 class="milijana">
+    {{ cart?.storeName }}
+  </h2>
+  <table mat-table [dataSource]="products" class="mat-elevation-z8">
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Product</th>
+      <td mat-cell *matCellDef="let element">{{ element.productName }}</td>
+    </ng-container>
 
-        <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef> Product </th>
-          <td mat-cell *matCellDef="let element"> {{element.productName}} </td>
-        </ng-container>
+    <ng-container matColumnDef="price">
+      <th mat-header-cell *matHeaderCellDef>Price</th>
+      <td mat-cell *matCellDef="let element">{{ element.productPrice }}</td>
+    </ng-container>
 
-        <ng-container matColumnDef="price">
-          <th mat-header-cell *matHeaderCellDef> Price </th>
-          <td mat-cell *matCellDef="let element"> {{element.productPrice}} </td>
-        </ng-container>
+    <ng-container matColumnDef="dec-button">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+        <button
+          mat-stroked-button
+          color="warn"
+          (click)="changeQuantity(element.quantity - 1, element.productId)"
+        >
+          -
+        </button>
+      </td>
+    </ng-container>
 
-        <ng-container matColumnDef="dec-button">
-          <th mat-header-cell *matHeaderCellDef> </th>
-          <td mat-cell *matCellDef="let element">
-              <button mat-raised-button color="primary" (click)="changeQuantity(element.quantity - 1, element.productId)">-</button>
-          </td>
-        </ng-container>
+    <ng-container matColumnDef="quantity">
+      <th mat-header-cell *matHeaderCellDef>Quantity</th>
+      <td mat-cell *matCellDef="let element">{{ element.quantity }}</td>
+    </ng-container>
 
-        <ng-container matColumnDef="quantity">
-            <th mat-header-cell *matHeaderCellDef> Quantity </th>
-            <td mat-cell *matCellDef="let element"> {{element.quantity}} </td>
-        </ng-container>
+    <ng-container matColumnDef="inc-button">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+        <button
+          mat-stroked-button
+          color="warn"
+          (click)="changeQuantity(element.quantity + 1, element.productId)"
+        >
+          +
+        </button>
+      </td>
+    </ng-container>
 
-        <ng-container matColumnDef="inc-button">
-            <th mat-header-cell *matHeaderCellDef> </th>
-            <td mat-cell *matCellDef="let element">
-                <button mat-raised-button color="primary" (click)="changeQuantity(element.quantity + 1, element.productId)">+</button>
-            </td>
-        </ng-container>
+    <ng-container matColumnDef="total">
+      <th mat-header-cell *matHeaderCellDef>Total</th>
+      <td mat-cell *matCellDef="let element">{{ element.total }}</td>
+    </ng-container>
 
-        <ng-container matColumnDef="total">
-          <th mat-header-cell *matHeaderCellDef> Total </th>
-          <td mat-cell *matCellDef="let element"> {{element.total}} </td>
-        </ng-container>
-      
-        <ng-container matColumnDef="remove-button">
-            <th mat-header-cell *matHeaderCellDef> </th>
-            <td mat-cell *matCellDef="let element">
-                <button mat-raised-button color="accent" (click)="remove(element.productId)">Remove</button>
-            </td>
-        </ng-container>
-      
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
-      <p class="total">Total price: {{cart?.total}}</p>
-      <button mat-raised-button color="primary" class="checkout" (click)="proceed()">Proceed to checkout</button>
+    <ng-container matColumnDef="remove-button">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+        <button
+          mat-raised-button
+          style="background-color: rgb(235, 87, 148); color: white"
+          (click)="remove(element.productId)"
+        >
+          Remove
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+  <p class="total">Total price: {{ cart?.total }}</p>
+  <button
+    mat-button
+    style="background-color: rgb(235, 87, 148); color: white; margin-left: 69%"
+    color="primary"
+    class="checkout"
+    (click)="proceed()"
+  >
+    Proceed to checkout
+  </button>
 </div>
