@@ -7,6 +7,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import sep.webshopback.dtos.PaymentResponseDTO;
 import sep.webshopback.dtos.PurchaseDTO;
 import sep.webshopback.exceptions.PaymentUnsuccessfulException;
 import sep.webshopback.exceptions.ProductNotFoundException;
@@ -36,6 +37,11 @@ public class PurchaseController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
+
+    @PostMapping("bank-payment-response")
+    public void bankPaymentResponse(@RequestBody PaymentResponseDTO dto){
+        service.saveTransaction(dto);
+    };
 
     @GetMapping
     @PreAuthorize("hasRole('SELLER')")

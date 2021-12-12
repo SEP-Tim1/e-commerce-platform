@@ -4,16 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import sep.webshopback.client.PSPClient;
-import sep.webshopback.dtos.PaymentRequestDTO;
-import sep.webshopback.dtos.PaymentResponseDTO;
-import sep.webshopback.dtos.ProductQuantityDTO;
-import sep.webshopback.dtos.PurchaseDTO;
+import sep.webshopback.dtos.*;
 import sep.webshopback.exceptions.PaymentUnsuccessfulException;
 import sep.webshopback.exceptions.ProductNotFoundException;
 import sep.webshopback.exceptions.ProductNotInStockException;
 import sep.webshopback.model.*;
 import sep.webshopback.repositories.PurchaseRepository;
 import sep.webshopback.repositories.ShoppingCartRepository;
+import sep.webshopback.repositories.TransactionRepository;
 import sep.webshopback.repositories.UserRepository;
 
 import javax.transaction.Transactional;
@@ -34,6 +32,8 @@ public class PurchaseService {
     private ShoppingCartRepository cartRepository;
     @Autowired
     private PSPClient pspClient;
+    @Autowired
+    private TransactionRepository transactionRepository;
     @Value("${front.base.url}")
     private String frontUrl;
 
@@ -87,7 +87,7 @@ public class PurchaseService {
                 .collect(Collectors.toList());
     }
 
-    private PaymentResponseDTO sendPaymentRequest(Purchase purchase) throws PaymentUnsuccessfulException {
+    private PaymentResponseIdDTO sendPaymentRequest(Purchase purchase) throws PaymentUnsuccessfulException {
         PaymentRequestDTO dto = new PaymentRequestDTO(
                 purchase.getStore().getApiToken(),
                 purchase.getId(),
@@ -103,6 +103,11 @@ public class PurchaseService {
             e.printStackTrace();
             throw new PaymentUnsuccessfulException("Payment service could not be started");
         }
+    }
+
+    public void saveTransaction(PaymentResponseDTO dto){
+        Transaction transaction = new Transaction(dto.getMerchantOrderId(), dto.getTransactionStatus(), dto.getPaymentId());
+        transactionRepository.save(transaction);
     }
 
     public void purchaseSuccessful(long purchaseId) {
