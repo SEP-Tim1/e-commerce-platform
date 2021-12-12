@@ -149,6 +149,9 @@ public class PurchaseService {
         for(ProductQuantity productQuantity: purchase.getCart().getProducts()) {
             productQuantity.getProduct().increaseQuantity(productQuantity.getQuantity());
         }
+        ShoppingCart cart = purchase.getCart();
+        purchase.setCart(null);
+        cartRepository.delete(cart);
         repository.delete(purchase);
     }
 
