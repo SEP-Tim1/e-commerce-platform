@@ -1,5 +1,6 @@
 package sep.webshopback.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class PurchaseService {
 
@@ -100,9 +102,10 @@ public class PurchaseService {
                 frontUrl + "/error/" + purchase.getId()
         );
         try {
-            return pspClient.create(dto);
+            PaymentResponseIdDTO response = pspClient.create(dto);
+            log.info("Payment request (id=" + response.getRequestId() + ") created for purchase (id=" + purchase.getId() + ")");
+            return response;
         } catch (Exception e) {
-            e.printStackTrace();
             throw new PaymentUnsuccessfulException("Payment service could not be started");
         }
     }
@@ -125,6 +128,7 @@ public class PurchaseService {
         ShoppingCart cart = p.getCart();
         p.setCart(null);
         cartRepository.delete(cart);
+        log.info("Purchase (id=" + p.getId() + ") was successful");
         return new PurchaseDTO(
                 p.getId(),
                 p.getUserDetails(),
@@ -153,6 +157,7 @@ public class PurchaseService {
         purchase.setCart(null);
         cartRepository.delete(cart);
         repository.delete(purchase);
+        log.info("Purchase (id=" + purchaseId + ") was successful. Deleted.");
     }
 
     public Transaction getTransaction(long purchaseId) throws TransactionNotFoundException {
