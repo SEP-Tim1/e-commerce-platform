@@ -1,8 +1,15 @@
-<ng-container *ngFor="let purchase of purchases">
-  <app-purchase-report
-    [purchase]="purchase"
-    [pproducts]="purchase.products"
-  ></app-purchase-report>
-  <div style="height: 30px"></div>
-  <mat-divider></mat-divider>
-</ng-container>
+<div class="div1">
+  <div class="aaa">
+    <ng-container *ngFor="let purchase of purchases">
+      <mat-card style="width: 60%; opacity: 80%; margin-left: 20%">
+        <app-purchase-report
+          [purchase]="purchase"
+          [pproducts]="purchase.products"
+        ></app-purchase-report>
+      </mat-card>
+      <div style="height: 30px"></div>
+      <mat-divider></mat-divider>
+      <div style="height: 30px"></div>
+    </ng-container>
+  </div>
+</div>

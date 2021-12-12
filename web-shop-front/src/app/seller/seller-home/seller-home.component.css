@@ -1,8 +1,19 @@
 .div1 {
-  height: max-content;
+  height: 100%;
   display: flex;
   justify-content: center;
+  align-content: center;
+  background-position: center;
+  background-repeat: repeat;
+  background-size: cover;
+  background-color: rgb(255, 203, 233);
+}
+
+.div2 {
   height: max-content;
+  width: 100%;
+  display: flex;
+  justify-content: center;
   align-content: center;
   background-position: center;
   background-repeat: repeat;

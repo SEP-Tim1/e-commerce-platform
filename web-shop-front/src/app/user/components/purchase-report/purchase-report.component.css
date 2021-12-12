@@ -1,22 +1,46 @@
 .created {
-    text-align: center;
-    font-size: 15pt;
-    margin-top: 30px;
-    margin: 10px;
+  text-align: center;
+  font-size: 16pt;
+  margin-top: 30px;
+  margin: 10px;
+}
+
+.date {
+  text-align: center;
+  font-size: 10pt;
+  margin-top: 20px;
+  margin: 10px;
+}
+
+.info {
+  text-align: left;
+  margin-left: 5%;
 }
 
 .contact {
-    margin: 10px;
-    text-align: center;
-    font-size: 15pt;
-}
-
-p {
-    margin-left: 40%;
+  margin: 10px;
+  text-align: center;
+  font-size: 15pt;
 }
 
 table {
-    width: 60%;
-    margin-left: 20%;
-    margin-bottom: 20px;
+  width: 100%;
+  margin-bottom: 20px;
+  margin-top: 2%;
+}
+
+.mat-column-quantity {
+  text-align: center;
+}
+
+.mat-column-price {
+  text-align: center;
+}
+
+.mat-column-total {
+  text-align: center;
+}
+
+.mat-column-name {
+  text-align: center;
 }

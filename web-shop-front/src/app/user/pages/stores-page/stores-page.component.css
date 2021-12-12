@@ -1,0 +1,25 @@
+.div1 {
+  height: 100%;
+  justify-content: center;
+  display: flex;
+  background-position: center;
+  background-repeat: no-repeat;
+  align-content: center;
+  text-align: center;
+  background-size: cover;
+  background-color: rgb(255, 203, 233);
+}
+
+.aaa {
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+  background-position: center;
+  align-content: center;
+  text-align: center;
+  align-items: center;
+  margin-top: 3%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: rgb(255, 203, 233);
+}

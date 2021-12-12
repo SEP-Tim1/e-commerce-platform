@@ -1,108 +1,110 @@
 <div class="div1">
-  <div style="width: 40%; align-content: center; text-align: center">
-    <div
-      style="
-        margin-top: 20px;
-        width: 100%;
-        height: max-content;
-        align-content: center;
-        text-align: center;
-      "
-    >
-      <button
-        mat-stroked-button
-        routerLink="../create-product"
-        class="mat-elevation-z4"
-        style="background-color: white; width: 30%; height: 50px"
-      >
-        Create new product
-      </button>
-    </div>
-
-    <div
-      id="posts"
-      style="
-        width: 100%;
-        align-content: center;
-        text-align: center;
-        height: max-content;
-        margin-top: 50px;
-        padding-bottom: 50px;
-      "
-    >
+  <div class="div2">
+    <div style="width: 40%; align-content: center; text-align: center">
       <div
-        *ngFor="let post of products"
         style="
-          background-color: white;
+          margin-top: 20px;
           width: 100%;
-          margin-bottom: 50px;
           height: max-content;
-          padding-bottom: 20px;
+          align-content: center;
+          text-align: center;
         "
-        class="mat-elevation-z8"
+      >
+        <button
+          mat-stroked-button
+          routerLink="../create-product"
+          class="mat-elevation-z4"
+          style="background-color: white; width: 30%; height: 50px"
+        >
+          Create new product
+        </button>
+      </div>
+
+      <div
+        id="posts"
+        style="
+          width: 100%;
+          align-content: center;
+          text-align: center;
+          height: max-content;
+          margin-top: 50px;
+          padding-bottom: 50px;
+        "
       >
         <div
+          *ngFor="let post of products"
           style="
-            height: 50px;
-            line-height: 50px;
-            vertical-align: middle;
-            align-content: center;
-            text-align: center;
-            display: inline-block;
+            background-color: white;
+            width: 100%;
+            margin-bottom: 50px;
+            height: max-content;
+            padding-bottom: 20px;
           "
+          class="mat-elevation-z8"
         >
-          <span style="display: inline-block; vertical-align: middle">
-            <p style="font-size: large; display: inline">{{ post.name }}</p>
-          </span>
-        </div>
-        <div style="width: 100%; overflow: hidden">
-          <div style="width: 100%; text-align: center; margin: 0; padding: 0">
-            <ng-image-slider
-              #nav2
-              [images]="post.slider"
-              [infinite]="false"
-              [imageSize]="{ width: '100%', height: 300 }"
-              [imagePopup]="true"
-              [manageImageRatio]="true"
-              [showArrow]="true"
-              [videoAutoPlay]="true"
-            >
-            </ng-image-slider>
-          </div>
-        </div>
-        <div style="margin-top: 10px; height: max-content">
-          Quantity: <span style="color: gray">{{ post.quantity }}</span>
-          <span style="margin-left: 5%">Price: </span>
-          <span style="color: gray">{{ post.price }}</span>
-          <div></div>
-        </div>
-        <div
-          style="
-            height: 50px;
-            align-content: center;
-            text-align: center;
-            margin-top: 5%;
-          "
-        >
-          <button
-            mat-stroked-button
-            style="margin-left: 10%; margin-bottom: 20px; width: 35%"
-            (click)="delete(post.id)"
-          >
-            Delete
-          </button>
-          <button
-            mat-stroked-button
+          <div
             style="
-              margin-left: 10%;
-              margin-bottom: 20px;
-              width: 35%;
-              margin-right: 10%;
+              height: 50px;
+              line-height: 50px;
+              vertical-align: middle;
+              align-content: center;
+              text-align: center;
+              display: inline-block;
             "
-            (click)="update(post.id)"
           >
-            Update
-          </button>
+            <span style="display: inline-block; vertical-align: middle">
+              <p style="font-size: large; display: inline">{{ post.name }}</p>
+            </span>
+          </div>
+          <div style="width: 100%; overflow: hidden">
+            <div style="width: 100%; text-align: center; margin: 0; padding: 0">
+              <ng-image-slider
+                #nav2
+                [images]="post.slider"
+                [infinite]="false"
+                [imageSize]="{ width: '100%', height: 300 }"
+                [imagePopup]="true"
+                [manageImageRatio]="true"
+                [showArrow]="true"
+                [videoAutoPlay]="true"
+              >
+              </ng-image-slider>
+            </div>
+          </div>
+          <div style="margin-top: 10px; height: max-content">
+            Quantity: <span style="color: gray">{{ post.quantity }}</span>
+            <span style="margin-left: 5%">Price: </span>
+            <span style="color: gray">{{ post.price }}</span>
+            <div></div>
+          </div>
+          <div
+            style="
+              height: 50px;
+              align-content: center;
+              text-align: center;
+              margin-top: 5%;
+            "
+          >
+            <button
+              mat-stroked-button
+              style="margin-left: 10%; margin-bottom: 20px; width: 35%"
+              (click)="delete(post.id)"
+            >
+              Delete
+            </button>
+            <button
+              mat-stroked-button
+              style="
+                margin-left: 10%;
+                margin-bottom: 20px;
+                width: 35%;
+                margin-right: 10%;
+              "
+              (click)="update(post.id)"
+            >
+              Update
+            </button>
+          </div>
         </div>
       </div>
     </div>
