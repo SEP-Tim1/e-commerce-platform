@@ -1,0 +1,11 @@
+.div1 {
+  height: max-content;
+  display: flex;
+  justify-content: center;
+  height: max-content;
+  align-content: center;
+  background-position: center;
+  background-repeat: repeat;
+  background-size: cover;
+  background-color: rgb(255, 203, 233);
+}
