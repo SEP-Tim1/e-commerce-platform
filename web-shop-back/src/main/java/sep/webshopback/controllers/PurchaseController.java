@@ -52,8 +52,8 @@ public class PurchaseController {
     }
 
     @PutMapping("success/{purchaseId}")
-    public void purchaseSuccessful(@PathVariable long purchaseId) {
-        service.purchaseSuccessful(purchaseId);
+    public PurchaseDTO purchaseSuccessful(@PathVariable long purchaseId) {
+        return service.purchaseSuccessful(purchaseId);
     }
 
     @PutMapping("failure/{purchaseId}")

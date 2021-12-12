@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PurchaseService } from 'src/app/service/purchase.service';
+import { Purchase } from '../../dto/purchase';
+import { PurchaseDetails } from '../../dto/purchase-details';
 
 @Component({
   selector: 'app-success-page',
@@ -9,14 +11,15 @@ import { PurchaseService } from 'src/app/service/purchase.service';
 })
 export class SuccessPageComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute, private service: PurchaseService) { }
+  constructor(private route: ActivatedRoute, private service: PurchaseService, private router: Router) { }
 
   purchaseId = -1;
+  purchase: Purchase = new Purchase(0, new PurchaseDetails('', '', '', '', ''), new Date(), [], '');
 
   ngOnInit(): void {
     this.purchaseId = this.getPurchaseId();
     this.service.success(this.purchaseId).subscribe(
-      _ => console.log('ok')
+      purchase => this.purchase = purchase
     )
   }
 

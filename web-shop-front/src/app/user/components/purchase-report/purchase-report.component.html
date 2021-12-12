@@ -1,3 +1,4 @@
+<p class="created" *ngIf="this.authService.getRole() == 'USER'">Store name {{purchase?.storeName}}</p>
 <p class="created">Created {{purchase?.created | date: 'medium'}}</p>
 <p class="contact">Contact information</p>
 <p>Name: {{purchase?.userDetails?.name}}</p>

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/authentication/service/auth.service';
 import { ProductQuantity } from '../../dto/product-quantity';
 import { Purchase } from '../../dto/purchase';
 
@@ -9,7 +10,7 @@ import { Purchase } from '../../dto/purchase';
 })
 export class PurchaseReportComponent implements OnInit {
 
-  constructor() { }
+  constructor(public authService: AuthService) { }
 
   @Input() purchase: Purchase | null = null;
   displayedColumns: string[] = ["name", "price", "quantity", "total"];

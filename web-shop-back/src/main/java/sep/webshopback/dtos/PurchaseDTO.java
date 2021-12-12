@@ -19,4 +19,5 @@ public class PurchaseDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private LocalDateTime created;
     private List<ProductQuantityDTO> products;
+    private String storeName;
 }

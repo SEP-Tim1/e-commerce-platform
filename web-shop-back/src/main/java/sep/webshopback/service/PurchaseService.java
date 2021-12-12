@@ -82,7 +82,8 @@ public class PurchaseService {
                                 prods.getProduct().getPrice(),
                                 prods.getQuantity(),
                                 prods.getTotal()
-                        )).collect(Collectors.toList())
+                        )).collect(Collectors.toList()),
+                        p.getStore().getName()
                 )).sorted(Comparator.comparing(PurchaseDTO::getCreated))
                 .collect(Collectors.toList());
     }
@@ -110,15 +111,28 @@ public class PurchaseService {
         transactionRepository.save(transaction);
     }
 
-    public void purchaseSuccessful(long purchaseId) {
+    public PurchaseDTO purchaseSuccessful(long purchaseId) {
         Optional<Purchase> purchaseOpt =  repository.findById(purchaseId);
         if(purchaseOpt.isEmpty()) {
-            return;
+            return null;
         }
-        Purchase purchase = purchaseOpt.get();
-        ShoppingCart cart = purchase.getCart();
-        purchase.setCart(null);
+        Purchase p = purchaseOpt.get();
+        ShoppingCart cart = p.getCart();
+        p.setCart(null);
         cartRepository.delete(cart);
+        return new PurchaseDTO(
+                p.getId(),
+                p.getUserDetails(),
+                p.getCreated(),
+                p.getProducts().stream().map(prods -> new ProductQuantityDTO(
+                        -1,
+                        prods.getProduct().getName(),
+                        prods.getProduct().getPrice(),
+                        prods.getQuantity(),
+                        prods.getTotal()
+                )).collect(Collectors.toList()),
+                p.getStore().getName()
+        );
     }
 
     public void purchaseUnsuccessful(long purchaseId) {

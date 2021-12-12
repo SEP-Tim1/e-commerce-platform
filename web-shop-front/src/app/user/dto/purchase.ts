@@ -6,6 +6,7 @@ export class Purchase {
         public id: number,
         public userDetails: PurchaseDetails,
         public created: Date,
-        public products: ProductQuantity[]
+        public products: ProductQuantity[],
+        public storeName: string
     ) {}
 }
