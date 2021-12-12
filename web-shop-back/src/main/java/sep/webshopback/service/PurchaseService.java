@@ -8,6 +8,7 @@ import sep.webshopback.dtos.*;
 import sep.webshopback.exceptions.PaymentUnsuccessfulException;
 import sep.webshopback.exceptions.ProductNotFoundException;
 import sep.webshopback.exceptions.ProductNotInStockException;
+import sep.webshopback.exceptions.TransactionNotFoundException;
 import sep.webshopback.model.*;
 import sep.webshopback.repositories.PurchaseRepository;
 import sep.webshopback.repositories.ShoppingCartRepository;
@@ -107,7 +108,11 @@ public class PurchaseService {
     }
 
     public void saveTransaction(PaymentResponseDTO dto){
-        Transaction transaction = new Transaction(dto.getMerchantOrderId(), dto.getTransactionStatus(), dto.getPaymentId());
+        Transaction transaction = new Transaction(
+                dto.getMerchantOrderId(),
+                dto.getTransactionStatus(),
+                dto.getPaymentId(),
+                dto.getErrorMessage());
         transactionRepository.save(transaction);
     }
 
@@ -145,5 +150,13 @@ public class PurchaseService {
             productQuantity.getProduct().increaseQuantity(productQuantity.getQuantity());
         }
         repository.delete(purchase);
+    }
+
+    public Transaction getTransaction(long purchaseId) throws TransactionNotFoundException {
+        try {
+            return transactionRepository.findByPurchaseId(purchaseId);
+        } catch (Exception e) {
+            throw new TransactionNotFoundException();
+        }
     }
 }

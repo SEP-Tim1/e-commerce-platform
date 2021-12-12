@@ -1,5 +1,8 @@
 <ng-container *ngFor="let purchase of purchases">
-    <app-purchase-report [purchase]="purchase"></app-purchase-report>
-    <div style="height: 30px;"></div>
-    <mat-divider></mat-divider>
+  <app-purchase-report
+    [purchase]="purchase"
+    [pproducts]="purchase.products"
+  ></app-purchase-report>
+  <div style="height: 30px"></div>
+  <mat-divider></mat-divider>
 </ng-container>

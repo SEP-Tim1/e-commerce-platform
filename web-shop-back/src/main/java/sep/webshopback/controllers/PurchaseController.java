@@ -12,6 +12,7 @@ import sep.webshopback.dtos.PurchaseDTO;
 import sep.webshopback.exceptions.PaymentUnsuccessfulException;
 import sep.webshopback.exceptions.ProductNotFoundException;
 import sep.webshopback.exceptions.ProductNotInStockException;
+import sep.webshopback.exceptions.TransactionNotFoundException;
 import sep.webshopback.model.PurchaseUserDetails;
 import sep.webshopback.model.User;
 import sep.webshopback.service.PurchaseService;
@@ -59,5 +60,14 @@ public class PurchaseController {
     @PutMapping("failure/{purchaseId}")
     public void purchaseUnsuccessful(@PathVariable long purchaseId) {
         service.purchaseUnsuccessful(purchaseId);
+    }
+
+    @GetMapping("message/{purchaseId}")
+    public ResponseEntity<?> getTransactionMessage(@PathVariable long purchaseId){
+        try {
+            return ResponseEntity.ok(service.getTransaction(purchaseId));
+        } catch (TransactionNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

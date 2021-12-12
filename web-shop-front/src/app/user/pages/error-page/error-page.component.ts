@@ -5,23 +5,41 @@ import { PurchaseService } from 'src/app/service/purchase.service';
 @Component({
   selector: 'app-error-page',
   templateUrl: './error-page.component.html',
-  styleUrls: ['./error-page.component.css']
+  styleUrls: ['./error-page.component.css'],
 })
 export class ErrorPageComponent implements OnInit {
-
-  constructor(private route: ActivatedRoute, private service: PurchaseService) { }
+  message = '';
+  constructor(
+    private route: ActivatedRoute,
+    private service: PurchaseService
+  ) {}
 
   purchaseId = -1;
 
   ngOnInit(): void {
     this.purchaseId = this.getPurchaseId();
-    this.service.failure(this.purchaseId).subscribe(
-      _ => console.log('ok')
-    )
+    this.getTransactionMessage();
   }
 
   getPurchaseId(): number {
     return Number(this.route.snapshot.paramMap.get('id'));
   }
 
+  getTransactionMessage() {
+    this.service.getMessage(this.getPurchaseId()).subscribe(
+      (response) => {
+        console.log(response);
+        this.message = response.message;
+        this.service
+          .failure(this.purchaseId)
+          .subscribe((_) => console.log('ok'));
+      },
+      (error) => {
+        this.message = '';
+        this.service
+          .failure(this.purchaseId)
+          .subscribe((_) => console.log('ok'));
+      }
+    );
+  }
 }

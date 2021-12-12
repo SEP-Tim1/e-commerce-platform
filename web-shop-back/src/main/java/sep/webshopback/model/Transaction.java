@@ -25,9 +25,13 @@ public class Transaction {
     @Column
     private long invoiceId;
 
-    public Transaction(long purchaseId, String status, long invoiceId) {
+    @Column
+    private String message;
+
+    public Transaction(long purchaseId, String status, long invoiceId, String message) {
         this.purchaseId = purchaseId;
         this.status = status;
         this.invoiceId = invoiceId;
+        this.message = message;
     }
 }

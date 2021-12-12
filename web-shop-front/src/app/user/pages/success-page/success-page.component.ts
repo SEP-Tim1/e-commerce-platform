@@ -7,20 +7,30 @@ import { PurchaseDetails } from '../../dto/purchase-details';
 @Component({
   selector: 'app-success-page',
   templateUrl: './success-page.component.html',
-  styleUrls: ['./success-page.component.css']
+  styleUrls: ['./success-page.component.css'],
 })
 export class SuccessPageComponent implements OnInit {
-
-  constructor(private route: ActivatedRoute, private service: PurchaseService, private router: Router) { }
+  constructor(
+    private route: ActivatedRoute,
+    private service: PurchaseService,
+    private router: Router
+  ) {}
 
   purchaseId = -1;
-  purchase: Purchase = new Purchase(0, new PurchaseDetails('', '', '', '', ''), new Date(), [], '');
+  purchase: Purchase = new Purchase(
+    0,
+    new PurchaseDetails('', '', '', '', ''),
+    new Date(),
+    [],
+    ''
+  );
 
   ngOnInit(): void {
     this.purchaseId = this.getPurchaseId();
-    this.service.success(this.purchaseId).subscribe(
-      purchase => this.purchase = purchase
-    )
+    this.service.success(this.purchaseId).subscribe((response) => {
+      this.purchase = response;
+      console.log(response);
+    });
   }
 
   getPurchaseId(): number {
