@@ -1,16 +1,17 @@
-package sep.webshopback.dtos;
+package sep.webshopback.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import sep.webshopback.model.PurchaseStatus;
 
+import javax.persistence.Embeddable;
+
+@Embeddable
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class PaymentResponseDTO {
+public class PurchaseOutcome {
 
-    private long merchantOrderId;
     private PurchaseStatus status;
     private String message;
 }

@@ -1,6 +1,7 @@
 package sep.webshopback.model;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Embeddable
 public class ProductQuantity {
@@ -35,7 +36,7 @@ public class ProductQuantity {
         this.quantity = quantity;
     }
 
-    public float getTotal() {
-        return quantity * product.getPrice();
+    public float getTotal(LocalDateTime timePoint) {
+        return quantity * product.getPrice(timePoint);
     }
 }

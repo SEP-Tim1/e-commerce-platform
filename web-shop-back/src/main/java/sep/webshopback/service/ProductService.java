@@ -9,6 +9,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import sep.webshopback.dtos.ProductDTO;
 import sep.webshopback.dtos.ProductUpdateDTO;
+import sep.webshopback.dtos.UpdateProductDTO;
 import sep.webshopback.exceptions.ProductNotFoundException;
 import sep.webshopback.exceptions.StoreNotFoundException;
 import sep.webshopback.model.Product;
@@ -41,10 +43,18 @@ public class ProductService {
 		this.storeRepository = storeRepository;
 	}
 	 
-	public Product getProductById(long id) throws ProductNotFoundException {
-	        if(productRepository.findById(id).isPresent()) return productRepository.findById(id).get();
-	        throw new ProductNotFoundException();
-	    }
+	public UpdateProductDTO getById(long id) throws ProductNotFoundException {
+		if(productRepository.findById(id).isEmpty()) {
+			throw new ProductNotFoundException();
+		}
+		Product p = productRepository.findById(id).get();
+		return new UpdateProductDTO(
+				p.getId(),
+				p.getName(),
+				p.getCurrentPrice(),
+				p.getQuantity(),
+				p.getImageUrl());
+	}
 	
 	public void createProduct(MultipartFile file, ProductDTO dto, User user) throws IOException {
 		String fileName = saveFile(file, storageDirectoryPath);
@@ -91,16 +101,23 @@ public class ProductService {
 		return storeRepository.findAll().stream().filter(s -> s.getOwner().getId() == user.getId()).findFirst().orElse(null);
 	}
 	
-	 public List<Product> getProductsInStore(long storeId) throws StoreNotFoundException {
+	 public List<UpdateProductDTO> getProductsInStore(long storeId) throws StoreNotFoundException {
 		 Optional<Store> storeOpt = storeRepository.findById(storeId);
 		 if (!storeRepository.findById(storeId).isPresent()) {
 			 throw new StoreNotFoundException();
 		 }
-		 return storeOpt.get().getProducts();
+		 return storeOpt.get().getProducts().stream().map(p -> new UpdateProductDTO(
+		 		p.getId(),
+				 p.getName(),
+				 p.getCurrentPrice(),
+				 p.getQuantity(),
+				 p.getImageUrl()
+		 )).collect(Collectors.toList());
 	}
 	 
-	 public List<Product> getAllStoreProducts(User user) throws StoreNotFoundException {
-		Store store = storeRepository.findAll().stream().filter(s -> s.getOwner().getId() == user.getId()).findFirst().orElse(null);
+	 public List<UpdateProductDTO> getAllStoreProducts(User user) throws StoreNotFoundException {
+		Store store = storeRepository.findAll().stream().
+				filter(s -> s.getOwner().getId() == user.getId()).findFirst().orElse(null);
 		return getProductsInStore(store.getId());
 	 }
 	 
@@ -118,7 +135,7 @@ public class ProductService {
 			
 		}
 	 
-	 public void updateProductInfo(Product product) throws ProductNotFoundException {
+	 public void updateProductInfo(UpdateProductDTO product) throws ProductNotFoundException {
 		 Product oldProduct = getProductById(product.getId());
 		 oldProduct.setName(product.getName());
 		 oldProduct.setPrice(product.getPrice());
@@ -134,5 +151,10 @@ public class ProductService {
 		 productRepository.delete(product);
 	 }
 
-
+	private Product getProductById(long id) throws ProductNotFoundException {
+		if(productRepository.findById(id).isEmpty()) {
+			throw new ProductNotFoundException();
+		}
+		return productRepository.findById(id).get();
+	}
 }

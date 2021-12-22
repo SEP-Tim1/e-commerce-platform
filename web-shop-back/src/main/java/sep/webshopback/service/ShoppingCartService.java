@@ -11,6 +11,7 @@ import sep.webshopback.repositories.ProductRepository;
 import sep.webshopback.repositories.ShoppingCartRepository;
 import sep.webshopback.repositories.UserRepository;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -29,15 +30,17 @@ public class ShoppingCartService {
     private UserRepository userRepository;
 
     public List<ShoppingCartDTO> getAllByUserId(long userId) {
-        return repository.findAllByUserId(userId).stream().map(sc -> new ShoppingCartDTO(
+        return repository.findAllByUserId(userId).stream()
+                .filter(c -> c.isActive())
+                .map(sc -> new ShoppingCartDTO(
                 sc.getId(),
                 sc.getStore().getName(),
                 sc.getProducts().stream().map(p -> new ProductQuantityDTO(
                         p.getProduct().getId(),
                         p.getProduct().getName(),
-                        p.getProduct().getPrice(),
+                        p.getProduct().getCurrentPrice(),
                         p.getQuantity(),
-                        p.getTotal()
+                        p.getTotal(LocalDateTime.now())
                 )).collect(Collectors.toList()),
                 sc.getTotal()
         )).collect(Collectors.toList());

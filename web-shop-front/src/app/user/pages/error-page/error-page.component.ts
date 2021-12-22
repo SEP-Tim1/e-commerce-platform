@@ -26,20 +26,9 @@ export class ErrorPageComponent implements OnInit {
   }
 
   getTransactionMessage() {
-    this.service.getMessage(this.getPurchaseId()).subscribe(
-      (response) => {
-        console.log(response);
-        this.message = response.message;
-        this.service
-          .failure(this.purchaseId)
-          .subscribe((_) => console.log('ok'));
-      },
-      (error) => {
-        this.message = '';
-        this.service
-          .failure(this.purchaseId)
-          .subscribe((_) => console.log('ok'));
-      }
-    );
+    this.service.getOutcome(this.purchaseId).subscribe(
+      response => this.message = response.message,
+      _ => this.message = ''
+    )
   }
 }

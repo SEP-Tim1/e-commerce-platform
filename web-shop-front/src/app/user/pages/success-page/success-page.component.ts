@@ -27,13 +27,16 @@ export class SuccessPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.purchaseId = this.getPurchaseId();
-    this.service.success(this.purchaseId).subscribe((response) => {
-      this.purchase = response;
-      console.log(response);
-    });
+    this.getPurchaseInfo(this.purchaseId);
   }
 
   getPurchaseId(): number {
     return Number(this.route.snapshot.paramMap.get('id'));
+  }
+
+  getPurchaseInfo(id: number) {
+    this.service.get(id).subscribe(
+      purchase => this.purchase = purchase
+    )
   }
 }

@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import sep.webshopback.dtos.ProductDTO;
 import sep.webshopback.dtos.ProductUpdateDTO;
+import sep.webshopback.dtos.UpdateProductDTO;
 import sep.webshopback.exceptions.ProductNotFoundException;
 import sep.webshopback.exceptions.StoreNotFoundException;
 import sep.webshopback.model.Product;
@@ -65,7 +66,7 @@ public class ProductController {
     
     @GetMapping(value = "storesProducts")
     @PreAuthorize("hasRole('SELLER')")
-    public ResponseEntity<List<Product>> getProductsForOwnerId() throws StoreNotFoundException{
+    public ResponseEntity<List<UpdateProductDTO>> getProductsForOwnerId() throws StoreNotFoundException{
     	
     	User authenticated = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     	User user = userService.getById(authenticated.getId());
@@ -75,9 +76,9 @@ public class ProductController {
     
     @GetMapping(value = "{id}")
     @PreAuthorize("hasRole('SELLER')")
-    public ResponseEntity<Product> getProductById(@PathVariable long id){
+    public ResponseEntity<UpdateProductDTO> getProductById(@PathVariable long id){
         try {
-			return new ResponseEntity<>(productService.getProductById(id), HttpStatus.OK);
+			return new ResponseEntity<>(productService.getById(id), HttpStatus.OK);
 		} catch (ProductNotFoundException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		}
@@ -102,7 +103,7 @@ public class ProductController {
     
     @PostMapping(value = "updateProductInfo")
     @PreAuthorize("hasRole('SELLER')")
-	public ResponseEntity<Void> updateProductInfo(@RequestBody Product product) {
+	public ResponseEntity<Void> updateProductInfo(@RequestBody UpdateProductDTO product) {
     	try {
 			productService.updateProductInfo(product);
 		} catch (ProductNotFoundException e) {

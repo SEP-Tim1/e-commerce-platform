@@ -12,7 +12,8 @@ import sep.webshopback.dtos.PurchaseDTO;
 import sep.webshopback.exceptions.PaymentUnsuccessfulException;
 import sep.webshopback.exceptions.ProductNotFoundException;
 import sep.webshopback.exceptions.ProductNotInStockException;
-import sep.webshopback.exceptions.TransactionNotFoundException;
+import sep.webshopback.exceptions.PurchaseNotFoundException;
+import sep.webshopback.model.PurchaseOutcome;
 import sep.webshopback.model.PurchaseUserDetails;
 import sep.webshopback.model.User;
 import sep.webshopback.service.PurchaseService;
@@ -39,11 +40,6 @@ public class PurchaseController {
         }
     }
 
-    @PostMapping("bank-payment-response")
-    public void bankPaymentResponse(@RequestBody PaymentResponseDTO dto){
-        service.saveTransaction(dto);
-    };
-
     @GetMapping
     @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<List<PurchaseDTO>> getAll() {
@@ -52,22 +48,28 @@ public class PurchaseController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PutMapping("success/{purchaseId}")
-    public PurchaseDTO purchaseSuccessful(@PathVariable long purchaseId) {
-        return service.purchaseSuccessful(purchaseId);
-    }
-
-    @PutMapping("failure/{purchaseId}")
-    public void purchaseUnsuccessful(@PathVariable long purchaseId) {
-        service.purchaseUnsuccessful(purchaseId);
-    }
-
-    @GetMapping("message/{purchaseId}")
-    public ResponseEntity<?> getTransactionMessage(@PathVariable long purchaseId){
+    @GetMapping("outcome/{id}")
+    @PreAuthorize("hasRole('USER')")
+    public PurchaseOutcome getOutcome(@PathVariable long id) {
         try {
-            return ResponseEntity.ok(service.getTransaction(purchaseId));
-        } catch (TransactionNotFoundException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return service.getOutcome(id);
+        } catch (PurchaseNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("outcome")
+    public void process(@RequestBody PaymentResponseDTO dto) {
+        service.processPaymentOutcome(dto);
+    }
+
+    @GetMapping("{purchaseId}")
+    @PreAuthorize("hasRole('USER')")
+    public PurchaseDTO get(@PathVariable long purchaseId) {
+        try {
+            return service.get(purchaseId);
+        } catch (PurchaseNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
 }

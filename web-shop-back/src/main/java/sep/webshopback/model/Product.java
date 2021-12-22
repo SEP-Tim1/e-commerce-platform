@@ -8,6 +8,11 @@ import sep.webshopback.exceptions.ProductNotInStockException;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Table(name = "products")
@@ -24,27 +29,24 @@ public class Product {
     @NotBlank
     private String name;
 
-    @Column(name = "price")
-    @NotNull
-    private float price;
-
     @Column(name = "quantity")
     @NotNull
     private long quantity;
 
+    @ElementCollection
+    private List<Price> priceList;
+
     @Column(name = "image_url")
     private String imageUrl;
 
-    public Product(String name, float price, long quantity) {
+    public Product(String name, long quantity) {
         this.name = name;
-        this.price = price;
         this.quantity = quantity;
         this.imageUrl = "";
     }
 
-    public Product(String name, float price, long quantity, String imageUrl) {
+    public Product(String name, long quantity, String imageUrl) {
         this.name = name;
-        this.price = price;
         this.quantity = quantity;
         this.imageUrl = imageUrl;
     }
@@ -65,5 +67,38 @@ public class Product {
             return;
         }
         quantity += increase;
+    }
+
+    public float getCurrentPrice() {
+        if (priceList == null) {
+            priceList = new ArrayList<>();
+        }
+        Optional<Price> price = priceList.stream()
+                .max(Comparator.comparing(Price::getActiveFrom));
+        if (price.isEmpty()) {
+            return 0;
+        }
+        return price.get().getPrice();
+    }
+
+    public float getPrice(LocalDateTime timePoint) {
+        if (priceList == null) {
+            priceList = new ArrayList<>();
+        }
+        Optional<Price> price = priceList.stream()
+                .filter(p -> p.getActiveFrom().isBefore(timePoint))
+                .max(Comparator.comparing(Price::getActiveFrom));
+        if (price.isEmpty()) {
+            return 0;
+        }
+        return price.get().getPrice();
+    }
+
+    public void setPrice(float price) {
+        if (priceList == null) {
+            priceList = new ArrayList<>();
+        }
+        Price newPrice = new Price(price, LocalDateTime.now());
+        priceList.add(newPrice);
     }
 }

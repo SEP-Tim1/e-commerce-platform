@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -23,38 +21,24 @@ public class Purchase {
     @Column(name="created")
     private LocalDateTime created;
     @ManyToOne
-    private Store store;
-    @ElementCollection
-    private List<PurchasedProductQuantity> products;
-    @ManyToOne
     private ShoppingCart cart;
+    @Embedded
+    private PurchaseOutcome outcome;
 
-    public Purchase(PurchaseUserDetails userDetails, LocalDateTime created, Store store, ShoppingCart cart) {
+    public Purchase(PurchaseUserDetails userDetails, LocalDateTime created, ShoppingCart cart) {
         this.userDetails = userDetails;
         this.created = created;
-        this.store = store;
         this.cart = cart;
-        this.products = new ArrayList<>();
     }
 
     public float getTotal() {
-        float sum = 0;
-        for (PurchasedProductQuantity p : products) {
-            sum += p.getTotal();
-        }
-        return sum;
+        return cart.getTotal();
     }
 
-    public void addProduct(ProductQuantity product) {
-        if (products == null) {
-            products = new ArrayList<>();
+    public void setOutcome(PurchaseOutcome outcome) {
+        this.outcome = outcome;
+        if (outcome.getStatus() == PurchaseStatus.SUCCESS) {
+            cart.setActive(false);
         }
-        PurchasedProductQuantity purchased = new PurchasedProductQuantity(
-            new ProductSnapshot(
-                    product.getProduct().getName(),
-                    product.getProduct().getPrice()),
-                product.getQuantity()
-        );
-        products.add(purchased);
     }
 }

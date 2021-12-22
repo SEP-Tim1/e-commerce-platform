@@ -9,11 +9,11 @@ import sep.webshopback.dtos.*;
 import sep.webshopback.exceptions.PaymentUnsuccessfulException;
 import sep.webshopback.exceptions.ProductNotFoundException;
 import sep.webshopback.exceptions.ProductNotInStockException;
-import sep.webshopback.exceptions.TransactionNotFoundException;
+import sep.webshopback.exceptions.PurchaseNotFoundException;
 import sep.webshopback.model.*;
+import sep.webshopback.repositories.ProductRepository;
 import sep.webshopback.repositories.PurchaseRepository;
 import sep.webshopback.repositories.ShoppingCartRepository;
-import sep.webshopback.repositories.TransactionRepository;
 import sep.webshopback.repositories.UserRepository;
 
 import javax.transaction.Transactional;
@@ -34,9 +34,9 @@ public class PurchaseService {
     @Autowired
     private ShoppingCartRepository cartRepository;
     @Autowired
-    private PSPClient pspClient;
+    private ProductRepository productRepository;
     @Autowired
-    private TransactionRepository transactionRepository;
+    private PSPClient pspClient;
     @Value("${front.base.url}")
     private String frontUrl;
 
@@ -59,47 +59,43 @@ public class PurchaseService {
         for(ProductQuantity p : cart.getProducts()) {
             cart.getStore().decreaseQuantity(p.getProduct(), p.getQuantity());
         }
-        Purchase purchase = new Purchase(
-                details,
-                LocalDateTime.now(),
-                cart.getStore(),
-                cart
-        );
-        for(ProductQuantity p : cart.getProducts()) {
-            purchase.addProduct(p);
-        }
+        Purchase purchase = new Purchase(details, LocalDateTime.now(), cart);
         purchase = repository.save(purchase);
 
-        return sendPaymentRequest(purchase).getRequestId();
+        long paymentRequestId = sendPaymentRequest(purchase).getRequestId();
+        return paymentRequestId;
     }
 
     public List<PurchaseDTO> getAll(long userId) {
-        return repository.findAllByStoreOwnerId(userId).stream()
+        return repository.findAllByCartStoreOwnerId(userId).stream()
+                .filter(p -> p.getOutcome().getStatus() == PurchaseStatus.SUCCESS)
                 .map(p -> new PurchaseDTO(
                         p.getId(),
                         p.getUserDetails(),
                         p.getCreated(),
-                        p.getProducts().stream().map(prods -> new ProductQuantityDTO(
+                        p.getCart().getProducts().stream().map(prods -> new ProductQuantityDTO(
                                 -1,
                                 prods.getProduct().getName(),
-                                prods.getProduct().getPrice(),
+                                prods.getProduct().getPrice(p.getCreated()),
                                 prods.getQuantity(),
-                                prods.getTotal()
+                                prods.getTotal(p.getCreated())
                         )).collect(Collectors.toList()),
-                        p.getStore().getName()
+                        p.getCart().getStore().getName()
                 )).sorted(Comparator.comparing(PurchaseDTO::getCreated))
                 .collect(Collectors.toList());
     }
 
     private PaymentResponseIdDTO sendPaymentRequest(Purchase purchase) throws PaymentUnsuccessfulException {
         PaymentRequestDTO dto = new PaymentRequestDTO(
-                purchase.getStore().getApiToken(),
+                purchase.getCart().getStore().getApiToken(),
                 purchase.getId(),
                 purchase.getCreated(),
                 purchase.getTotal(),
                 frontUrl + "/success/" + purchase.getId(),
                 frontUrl + "/failure/" + purchase.getId(),
-                frontUrl + "/error/" + purchase.getId()
+                frontUrl + "/error/" + purchase.getId(),
+                //TODO: IZMENITI OVO !!!!!
+                "http://localhost:8050/purchase/outcome"
         );
         try {
             PaymentResponseIdDTO response = pspClient.create(dto);
@@ -110,61 +106,56 @@ public class PurchaseService {
         }
     }
 
-    public void saveTransaction(PaymentResponseDTO dto){
-        Transaction transaction = new Transaction(
-                dto.getMerchantOrderId(),
-                dto.getTransactionStatus(),
-                dto.getPaymentId(),
-                dto.getErrorMessage());
-        transactionRepository.save(transaction);
+    public void processPaymentOutcome(PaymentResponseDTO dto){
+        Optional<Purchase> purchaseOpt =  repository.findById(dto.getMerchantOrderId());
+        if(purchaseOpt.isEmpty()) { return; }
+        Purchase p = purchaseOpt.get();
+        if(p.getOutcome() != null) { return; }
+        p.setOutcome(new PurchaseOutcome(dto.getStatus(), dto.getMessage()));
+        repository.save(p);
+        log.info("Purchase (id=" + p.getId() + ") status modified to: " + p.getOutcome().getStatus());
+        if (dto.getStatus() != PurchaseStatus.SUCCESS) {
+            purchaseUnsuccessful(p);
+        }
     }
 
-    public PurchaseDTO purchaseSuccessful(long purchaseId) {
-        Optional<Purchase> purchaseOpt =  repository.findById(purchaseId);
-        if(purchaseOpt.isEmpty()) {
-            return null;
+    public PurchaseOutcome getOutcome(long purchaseId) throws PurchaseNotFoundException {
+        Optional<Purchase> purchase = repository.findById(purchaseId);
+        if (purchase.isEmpty()) {
+            throw new PurchaseNotFoundException("Purchase not found");
         }
-        Purchase p = purchaseOpt.get();
-        ShoppingCart cart = p.getCart();
-        p.setCart(null);
-        cartRepository.delete(cart);
-        log.info("Purchase (id=" + p.getId() + ") was successful");
+        return purchase.get().getOutcome();
+    }
+
+    public PurchaseDTO get(long id) throws PurchaseNotFoundException {
+        Optional<Purchase> purchase = repository.findById(id);
+        if (purchase.isEmpty()) {
+            throw new PurchaseNotFoundException("Purchase not found");
+        }
+        if (purchase.get().getOutcome().getStatus() != PurchaseStatus.SUCCESS) {
+            throw new PurchaseNotFoundException("Purchase not found");
+        }
         return new PurchaseDTO(
-                p.getId(),
-                p.getUserDetails(),
-                p.getCreated(),
-                p.getProducts().stream().map(prods -> new ProductQuantityDTO(
-                        -1,
-                        prods.getProduct().getName(),
-                        prods.getProduct().getPrice(),
-                        prods.getQuantity(),
-                        prods.getTotal()
-                )).collect(Collectors.toList()),
-                p.getStore().getName()
+                purchase.get().getId(),
+                purchase.get().getUserDetails(),
+                purchase.get().getCreated(),
+                purchase.get().getCart().getProducts().stream().map(
+                        p -> new ProductQuantityDTO(
+                                p.getProduct().getId(),
+                                p.getProduct().getName(),
+                                p.getProduct().getPrice(purchase.get().getCreated()),
+                                p.getQuantity(),
+                                p.getTotal(purchase.get().getCreated()))
+                ).collect(Collectors.toList()),
+                purchase.get().getCart().getStore().getName()
         );
     }
 
-    public void purchaseUnsuccessful(long purchaseId) {
-        Optional<Purchase> purchaseOpt =  repository.findById(purchaseId);
-        if(purchaseOpt.isEmpty()) {
-            return;
-        }
-        Purchase purchase = purchaseOpt.get();
-        for(ProductQuantity productQuantity: purchase.getCart().getProducts()) {
-            productQuantity.getProduct().increaseQuantity(productQuantity.getQuantity());
-        }
-        ShoppingCart cart = purchase.getCart();
-        purchase.setCart(null);
-        cartRepository.delete(cart);
-        repository.delete(purchase);
-        log.info("Purchase (id=" + purchaseId + ") was successful. Deleted.");
-    }
-
-    public Transaction getTransaction(long purchaseId) throws TransactionNotFoundException {
-        try {
-            return transactionRepository.findByPurchaseId(purchaseId);
-        } catch (Exception e) {
-            throw new TransactionNotFoundException();
+    private void purchaseUnsuccessful(Purchase p) {
+        for(ProductQuantity productQuantity: p.getCart().getProducts()) {
+            Product product = productQuantity.getProduct();
+            product.increaseQuantity(productQuantity.getQuantity());
+            productRepository.save(product);
         }
     }
 }

@@ -5,10 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import sep.webshopback.dtos.StoreBasicInfoDTO;
-import sep.webshopback.dtos.StoreDTO;
-import sep.webshopback.dtos.StoreInfoDTO;
-import sep.webshopback.dtos.StoreNameDTO;
+import sep.webshopback.dtos.*;
 import sep.webshopback.exceptions.StoreNotFoundException;
 import sep.webshopback.model.Product;
 import sep.webshopback.model.Store;
@@ -46,7 +43,7 @@ public class StoreController {
     @GetMapping("/{id}/products")
     public ResponseEntity<?> getProducts(@PathVariable long id) {
         try {
-            List<Product> products = productService.getProductsInStore(id);
+            List<UpdateProductDTO> products = productService.getProductsInStore(id);
             return ResponseEntity.ok(products);
         } catch (StoreNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
