@@ -17,6 +17,8 @@ import sep.webshopback.repositories.ShoppingCartRepository;
 import sep.webshopback.repositories.UserRepository;
 
 import javax.transaction.Transactional;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
@@ -39,6 +41,8 @@ public class PurchaseService {
     private PSPClient pspClient;
     @Value("${front.base.url}")
     private String frontUrl;
+    @Value("${server.port}")
+    int port;
 
     @Transactional(rollbackOn = {ProductNotFoundException.class, ProductNotInStockException.class, PaymentUnsuccessfulException.class})
     public long purchase(long userId, long cartId, PurchaseUserDetails details) throws ProductNotFoundException, ProductNotInStockException, PaymentUnsuccessfulException {
@@ -58,6 +62,7 @@ public class PurchaseService {
 
         for(ProductQuantity p : cart.getProducts()) {
             cart.getStore().decreaseQuantity(p.getProduct(), p.getQuantity());
+            productRepository.save(p.getProduct());
         }
         Purchase purchase = new Purchase(details, LocalDateTime.now(), cart);
         purchase = repository.save(purchase);
@@ -86,16 +91,22 @@ public class PurchaseService {
     }
 
     private PaymentResponseIdDTO sendPaymentRequest(Purchase purchase) throws PaymentUnsuccessfulException {
+        String hostName;
+        try {
+            hostName = InetAddress.getLocalHost().getHostName();
+        } catch (UnknownHostException e) {
+            hostName = "localhost";
+        }
         PaymentRequestDTO dto = new PaymentRequestDTO(
                 purchase.getCart().getStore().getApiToken(),
                 purchase.getId(),
                 purchase.getCreated(),
                 purchase.getTotal(),
+                "RSD",
                 frontUrl + "/success/" + purchase.getId(),
                 frontUrl + "/failure/" + purchase.getId(),
                 frontUrl + "/error/" + purchase.getId(),
-                //TODO: IZMENITI OVO !!!!!
-                "http://localhost:8050/purchase/outcome"
+                "http://"+ hostName +":" + port + "/purchase/outcome"
         );
         try {
             PaymentResponseIdDTO response = pspClient.create(dto);

@@ -14,8 +14,6 @@ import javax.validation.constraints.Email;
 @Data
 public class PurchaseUserDetails {
 
-    @Column
-    private Long userId;
     @Column(name = "name", nullable = false)
     private String name;
     @Column(name = "surname", nullable = false)
