@@ -57,7 +57,7 @@ public class ShoppingCartService {
             throw new ProductNotFoundException();
         }
 
-        ShoppingCart cart = repository.findByUserIdAndStoreId(userId, store.getId());
+        ShoppingCart cart = getByUserIdAndStoreId(userId, store.getId());
         if (cart == null) {
             cart = createCart(userId, store, product);
         } else {
@@ -76,7 +76,7 @@ public class ShoppingCartService {
         if (store == null) {
             throw new ProductNotFoundException();
         }
-        ShoppingCart cart = repository.findByUserIdAndStoreId(userId, store.getId());
+        ShoppingCart cart = getByUserIdAndStoreId(userId, store.getId());
         if (cart == null) {
             return;
         }
@@ -97,6 +97,9 @@ public class ShoppingCartService {
         if (cart.getUser().getId() != userId) {
             return;
         }
+        if (!cart.isActive()) {
+            return;
+        }
         cart.changeQuantityByProductId(change.getProductId(), change.getNewQuantity());
         repository.save(cart);
     }
@@ -113,5 +116,10 @@ public class ShoppingCartService {
                 Arrays.asList(new ProductQuantity(product, 1))
         );
         return cart;
+    }
+
+    private ShoppingCart getByUserIdAndStoreId(long userId, long storeId) {
+        List<ShoppingCart> carts = repository.findAllByUserIdAndStoreId(userId, storeId);
+        return carts.stream().filter(c -> c.isActive()).findFirst().orElse(null);
     }
 }

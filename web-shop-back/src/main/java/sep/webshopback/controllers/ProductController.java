@@ -58,7 +58,6 @@ public class ProductController {
     	try {
 			productService.createProduct(data, productDTO, user);
 		} catch (IOException e) {
-			e.printStackTrace();
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
 		}
 		return new ResponseEntity<>(HttpStatus.OK);
@@ -93,7 +92,6 @@ public class ProductController {
     	try {
 			productService.updateProductImage(data, productDTO);
 		} catch (IOException e) {
-			e.printStackTrace();
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
 		} catch (ProductNotFoundException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);

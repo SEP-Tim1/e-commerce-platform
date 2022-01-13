@@ -11,7 +11,12 @@
       >
         Your purchase was successful
       </h1>
-      <app-purchase-report [purchase]="purchase"></app-purchase-report>
+      <app-purchase-report [purchase]="purchase" *ngIf="processed"></app-purchase-report>
+      <div *ngIf="!processed">
+        <h2 class="info">Your payment is still being processed</h2>
+        <p class="info">Revisit this page until your purchased products are displayed: <a [href]="location">{{location}}</a></p>
+        <p class="info">NOTE: If your shopping cart reappeares, it indicates that payment processing was unsuccessful</p>
+      </div>
       <button
         mat-raised-button
         routerLink=""

@@ -29,6 +29,7 @@ public class Purchase {
         this.userDetails = userDetails;
         this.created = created;
         this.cart = cart;
+        cart.setActive(false);
     }
 
     public float getTotal() {
@@ -39,6 +40,9 @@ public class Purchase {
         this.outcome = outcome;
         if (outcome.getStatus() == PurchaseStatus.SUCCESS) {
             cart.setActive(false);
+        }
+        else {
+            cart.setActive(true);
         }
     }
 }

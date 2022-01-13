@@ -17,8 +17,6 @@ import sep.webshopback.repositories.ShoppingCartRepository;
 import sep.webshopback.repositories.UserRepository;
 
 import javax.transaction.Transactional;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
@@ -41,6 +39,8 @@ public class PurchaseService {
     private PSPClient pspClient;
     @Value("${front.base.url}")
     private String frontUrl;
+    @Value("${server.host}")
+    private String host;
     @Value("${server.port}")
     int port;
 
@@ -91,12 +91,6 @@ public class PurchaseService {
     }
 
     private PaymentResponseIdDTO sendPaymentRequest(Purchase purchase) throws PaymentUnsuccessfulException {
-        String hostName;
-        try {
-            hostName = InetAddress.getLocalHost().getHostName();
-        } catch (UnknownHostException e) {
-            hostName = "localhost";
-        }
         PaymentRequestDTO dto = new PaymentRequestDTO(
                 purchase.getCart().getStore().getApiToken(),
                 purchase.getId(),
@@ -106,7 +100,7 @@ public class PurchaseService {
                 frontUrl + "/success/" + purchase.getId(),
                 frontUrl + "/failure/" + purchase.getId(),
                 frontUrl + "/error/" + purchase.getId(),
-                "http://"+ hostName +":" + port + "/purchase/outcome"
+                "http://"+ host +":" + port + "/purchase/outcome"
         );
         try {
             PaymentResponseIdDTO response = pspClient.create(dto);
@@ -143,7 +137,7 @@ public class PurchaseService {
         if (purchase.isEmpty()) {
             throw new PurchaseNotFoundException("Purchase not found");
         }
-        if (purchase.get().getOutcome().getStatus() != PurchaseStatus.SUCCESS) {
+        if (purchase.get().getOutcome() == null || purchase.get().getOutcome().getStatus() != PurchaseStatus.SUCCESS) {
             throw new PurchaseNotFoundException("Purchase not found");
         }
         return new PurchaseDTO(

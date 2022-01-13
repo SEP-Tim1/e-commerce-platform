@@ -11,5 +11,5 @@ public interface ShoppingCartRepository extends JpaRepository<ShoppingCart, Long
 
     List<ShoppingCart> findAllByUserId(long userId);
 
-    ShoppingCart findByUserIdAndStoreId(long userId, long storeId);
+    List<ShoppingCart> findAllByUserIdAndStoreId(long userId, long storeId);
 }

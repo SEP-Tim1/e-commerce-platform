@@ -12,11 +12,12 @@ import { PurchaseDetails } from '../../dto/purchase-details';
 export class SuccessPageComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
-    private service: PurchaseService,
-    private router: Router
+    private service: PurchaseService
   ) {}
 
   purchaseId = -1;
+  processed = true;
+  location = window.location.href
   purchase: Purchase = new Purchase(
     0,
     new PurchaseDetails('', '', '', '', ''),
@@ -36,7 +37,8 @@ export class SuccessPageComponent implements OnInit {
 
   getPurchaseInfo(id: number) {
     this.service.get(id).subscribe(
-      purchase => this.purchase = purchase
+      purchase => this.purchase = purchase,
+      _ => this.processed = false
     )
   }
 }
