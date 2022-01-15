@@ -59,11 +59,6 @@ public class PurchaseService {
         if (user.getId() != cart.getUser().getId()) {
             throw new ProductNotFoundException();
         }
-
-        for(ProductQuantity p : cart.getProducts()) {
-            cart.getStore().decreaseQuantity(p.getProduct(), p.getQuantity());
-            productRepository.save(p.getProduct());
-        }
         Purchase purchase = new Purchase(details, LocalDateTime.now(), cart);
         purchase = repository.save(purchase);
 
@@ -73,7 +68,7 @@ public class PurchaseService {
 
     public List<PurchaseDTO> getAll(long userId) {
         return repository.findAllByCartStoreOwnerId(userId).stream()
-                .filter(p -> p.getOutcome().getStatus() == PurchaseStatus.SUCCESS)
+                .filter(p -> p.getOutcome() != null && p.getOutcome().getStatus() == PurchaseStatus.SUCCESS)
                 .map(p -> new PurchaseDTO(
                         p.getId(),
                         p.getUserDetails(),
@@ -96,7 +91,7 @@ public class PurchaseService {
                 purchase.getId(),
                 purchase.getCreated(),
                 purchase.getTotal(),
-                "RSD",
+                "USD",
                 frontUrl + "/success/" + purchase.getId(),
                 frontUrl + "/failure/" + purchase.getId(),
                 frontUrl + "/error/" + purchase.getId(),
@@ -119,8 +114,8 @@ public class PurchaseService {
         p.setOutcome(new PurchaseOutcome(dto.getStatus(), dto.getMessage()));
         repository.save(p);
         log.info("Purchase (id=" + p.getId() + ") status modified to: " + p.getOutcome().getStatus());
-        if (dto.getStatus() != PurchaseStatus.SUCCESS) {
-            purchaseUnsuccessful(p);
+        if (dto.getStatus() == PurchaseStatus.SUCCESS) {
+            purchaseSuccessful(p);
         }
     }
 
@@ -156,11 +151,14 @@ public class PurchaseService {
         );
     }
 
-    private void purchaseUnsuccessful(Purchase p) {
+    private void purchaseSuccessful(Purchase p) {
         for(ProductQuantity productQuantity: p.getCart().getProducts()) {
             Product product = productQuantity.getProduct();
-            product.increaseQuantity(productQuantity.getQuantity());
-            productRepository.save(product);
+            try {
+                product.decreaseQuantity(productQuantity.getQuantity());
+                productRepository.save(product);
+            } catch (ProductNotInStockException e) {
+            }
         }
     }
 }

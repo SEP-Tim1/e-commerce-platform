@@ -29,7 +29,6 @@ public class Purchase {
         this.userDetails = userDetails;
         this.created = created;
         this.cart = cart;
-        cart.setActive(false);
     }
 
     public float getTotal() {
