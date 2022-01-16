@@ -39,6 +39,8 @@ public class ShoppingCartService {
                         p.getProduct().getId(),
                         p.getProduct().getName(),
                         p.getProduct().getCurrentPrice(),
+                        p.getProduct().getCurrentBillingCycle(),
+                        p.getProduct().isHasQuantity(),
                         p.getQuantity(),
                         p.getTotal(LocalDateTime.now())
                 )).collect(Collectors.toList()),

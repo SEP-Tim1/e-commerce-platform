@@ -51,7 +51,9 @@ public class ProductService {
 		return new UpdateProductDTO(
 				p.getId(),
 				p.getName(),
+				p.getCurrentBillingCycle(),
 				p.getCurrentPrice(),
+				p.isHasQuantity(),
 				p.getQuantity(),
 				p.getImageUrl());
 	}
@@ -62,7 +64,8 @@ public class ProductService {
 		
 		Product product = new Product();
 		product.setName(dto.getName());
-		product.setPrice(Float.parseFloat(dto.getPrice()));
+		product.setPrice(Float.parseFloat(dto.getPrice()), dto.getBillingCycle());
+		product.setHasQuantity(dto.isHasQuantity());
 		product.setQuantity(dto.getQuantity());
 		product.setImageUrl(fileDownloadUri);
 		productRepository.save(product);
@@ -108,7 +111,9 @@ public class ProductService {
 		 return storeOpt.get().getProducts().stream().map(p -> new UpdateProductDTO(
 		 		p.getId(),
 				 p.getName(),
+				 p.getCurrentBillingCycle(),
 				 p.getCurrentPrice(),
+				 p.isHasQuantity(),
 				 p.getQuantity(),
 				 p.getImageUrl()
 		 )).collect(Collectors.toList());
@@ -126,7 +131,8 @@ public class ProductService {
 			
 			Product product = getProductById(dto.getId());
 			product.setName(dto.getName());
-			product.setPrice(Float.parseFloat(dto.getPrice()));
+			product.setPrice(Float.parseFloat(dto.getPrice()), dto.getBillingCycle());
+			dto.setHasQuantity(dto.isHasQuantity());
 			product.setQuantity(dto.getQuantity());
 			product.setImageUrl(fileDownloadUri);
 			productRepository.save(product);
@@ -136,7 +142,8 @@ public class ProductService {
 	 public void updateProductInfo(UpdateProductDTO product) throws ProductNotFoundException {
 		 Product oldProduct = getProductById(product.getId());
 		 oldProduct.setName(product.getName());
-		 oldProduct.setPrice(product.getPrice());
+		 oldProduct.setPrice(product.getPrice(), product.getBillingCycle());
+		 oldProduct.setHasQuantity(product.isHasQuantity());
 		 oldProduct.setQuantity(product.getQuantity());
 		 productRepository.save(oldProduct);
 	 }

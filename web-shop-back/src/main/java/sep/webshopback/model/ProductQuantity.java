@@ -37,6 +37,6 @@ public class ProductQuantity {
     }
 
     public float getTotal(LocalDateTime timePoint) {
-        return quantity * product.getPrice(timePoint);
+        return product.isHasQuantity() ? quantity * product.getPrice(timePoint) : product.getPrice(timePoint);
     }
 }

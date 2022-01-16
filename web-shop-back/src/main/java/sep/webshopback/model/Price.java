@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 public class Price {
 
     @Column
+    BillingCycle billingCycle;
+    @Column
     private float price;
     @Column
     private LocalDateTime activeFrom;

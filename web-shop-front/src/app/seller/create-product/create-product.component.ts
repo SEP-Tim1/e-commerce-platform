@@ -12,6 +12,8 @@ export class CreateProductComponent implements OnInit {
 
   nameOfProduct : string = '';
   price : string = '';
+  billingCycle : string = 'ONE_TIME';
+  hasQuantity : boolean = true;
   quantity : number = 1;
   selectedFileHide = true;
   selectedFile: File = new File([],'');
@@ -28,7 +30,7 @@ export class CreateProductComponent implements OnInit {
     const fd = new FormData();
     fd.append('imageFile', this.selectedFile,  this.selectedFile.name);
     console.log(this.selectedFile.name);
-    var post =  new ProductDTO(this.nameOfProduct,this.price, this.quantity);
+    var post =  new ProductDTO(this.nameOfProduct,this.price, this.billingCycle, this.hasQuantity, this.quantity);
     fd.append('post', JSON.stringify(post));
     console.log(post.name);
 

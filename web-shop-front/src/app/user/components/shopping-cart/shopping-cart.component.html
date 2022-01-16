@@ -13,10 +13,16 @@
       <td mat-cell *matCellDef="let element">{{ element.productPrice }}</td>
     </ng-container>
 
+    <ng-container matColumnDef="billingCycle">
+      <th mat-header-cell *matHeaderCellDef>Billing cycle</th>
+      <td mat-cell *matCellDef="let element">{{ element.billingCycle !== 'ONE_TIME' ? element.billingCycle : '' }}</td>
+    </ng-container>
+
     <ng-container matColumnDef="dec-button">
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let element">
         <button
+          *ngIf="element.hasQuantity"
           mat-stroked-button
           color="warn"
           (click)="changeQuantity(element.quantity - 1, element.productId)"
@@ -28,13 +34,14 @@
 
     <ng-container matColumnDef="quantity">
       <th mat-header-cell *matHeaderCellDef>Quantity</th>
-      <td mat-cell *matCellDef="let element">{{ element.quantity }}</td>
+      <td mat-cell *matCellDef="let element">{{ element.hasQuantity ? element.quantity : '1' }}</td>
     </ng-container>
 
     <ng-container matColumnDef="inc-button">
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let element">
         <button
+          *ngIf="element.hasQuantity"
           mat-stroked-button
           color="warn"
           (click)="changeQuantity(element.quantity + 1, element.productId)"

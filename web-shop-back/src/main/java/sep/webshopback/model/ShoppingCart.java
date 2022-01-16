@@ -3,6 +3,7 @@ package sep.webshopback.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import sep.webshopback.exceptions.CartInvalidException;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -73,6 +74,16 @@ public class ShoppingCart {
         this.active = active;
         if (!active) {
             inactivated = LocalDateTime.now();
+        }
+    }
+
+    public void validate() throws CartInvalidException {
+        if (!products.stream().allMatch(p -> p.getProduct().getCurrentBillingCycle() == BillingCycle.ONE_TIME)
+            || !products.stream().allMatch(p -> p.getProduct().getCurrentBillingCycle() != BillingCycle.ONE_TIME)) {
+            throw new CartInvalidException("All items must be either one-time or subscription based payments");
+        }
+        if (products.stream().allMatch(p -> p.getProduct().getCurrentBillingCycle() != BillingCycle.ONE_TIME) && products.size() > 1) {
+            throw new CartInvalidException("Only one subscription based product can be in a cart");
         }
     }
 }

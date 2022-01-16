@@ -13,7 +13,7 @@ export class PurchaseReportComponent implements OnInit {
 
   @Input() purchase: Purchase | null = null;
   @Input() pproducts: ProductQuantity[] | null = null;
-  displayedColumns: string[] = ['name', 'price', 'quantity', 'total'];
+  displayedColumns: string[] = ['name', 'price', 'billingCycle', 'quantity', 'total'];
   products: ProductQuantity[] = [];
 
   ngOnInit(): void {

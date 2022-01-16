@@ -44,4 +44,8 @@ public class Purchase {
             cart.setActive(true);
         }
     }
+
+    public BillingCycle getBillingCycle() {
+        return cart.getProducts().get(0).getProduct().getCurrentBillingCycle();
+    }
 }

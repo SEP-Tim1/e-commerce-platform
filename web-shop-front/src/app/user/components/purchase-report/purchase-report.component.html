@@ -29,9 +29,16 @@
         <td mat-cell *matCellDef="let element">{{ element.productPrice }}</td>
       </ng-container>
 
+      <ng-container matColumnDef="billingCycle">
+        <th mat-header-cell *matHeaderCellDef>Billing cycle</th>
+        <td mat-cell *matCellDef="let element">{{ element.billingCycle }}</td>
+      </ng-container>
+
       <ng-container matColumnDef="quantity">
         <th mat-header-cell *matHeaderCellDef>Quantity</th>
-        <td mat-cell *matCellDef="let element">{{ element.quantity }}</td>
+        <td mat-cell *matCellDef="let element">
+          {{ element.hasQuantity ? element.quantity : '1' }}
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="total">

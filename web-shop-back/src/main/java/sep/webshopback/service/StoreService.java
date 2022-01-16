@@ -84,6 +84,7 @@ public class StoreService {
                         p.getId(),
                         p.getName(),
                         p.getCurrentPrice(),
+                        p.getCurrentBillingCycle(),
                         p.getImageUrl(),
                         p.isAvailable()
                 )).collect(Collectors.toList())

@@ -1,7 +1,7 @@
 <div class="container mat-elevation-z8">
   <p class="name">{{ product?.name }}</p>
   <img [src]="imagePath" alt="image" />
-  <p style="color: gray">{{ product?.price }} RSD</p>
+  <p style="color: gray">{{ product?.price }} USD {{ product?.billingCycle !== 'ONE_TIME' ? 'each ' + product?.billingCycle : '' }}</p>
   <button mat-raised-button *ngIf="product?.available" (click)="addToCart()">
     Add to cart
   </button>

@@ -54,7 +54,25 @@
         </mat-form-field>
       </div>
 
+      <div style="margin-bottom: 5%;">
+        <mat-form-field appearance="fill">
+          <mat-label>Billing cycle</mat-label>
+          <mat-select>
+            <mat-option (click)="this.billingCycle = 'ONE_TIME'">one-time</mat-option>
+            <mat-option (click)="this.billingCycle = 'WEEK'">week</mat-option>
+            <mat-option (click)="this.billingCycle = 'MONTH'">month</mat-option>
+            <mat-option (click)="this.billingCycle = 'YEAR'">year</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
       <div style="margin-bottom: 5%">
+        <button mat-raised-button (click)="this.hasQuantity = !this.hasQuantity" type="button">
+          {{ hasQuantity ? 'Product has quantity' : 'Product does not have quantity' }}
+        </button>
+      </div>
+
+      <div style="margin-bottom: 5%" *ngIf="hasQuantity">
         <mat-form-field style="width: 100%">
           <mat-label>Quantity</mat-label>
           <input
@@ -97,7 +115,7 @@
             mat-raised-button
             color="primary"
             style="padding: 12px 32px; margin-left: 12%"
-            [disabled]="name.invalid || name2.invalid || name3.invalid"
+            [disabled]="name.invalid || name2.invalid"
             type="submit"
           >
             Post data

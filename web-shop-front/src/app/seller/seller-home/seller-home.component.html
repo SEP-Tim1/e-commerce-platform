@@ -72,9 +72,11 @@
             </div>
           </div>
           <div style="margin-top: 10px; height: max-content">
-            Quantity: <span style="color: gray">{{ post.quantity }}</span>
+            <span *ngIf="post.hasQuantity">Quantity: <span style="color: gray">{{ post.quantity }}</span></span>
             <span style="margin-left: 5%">Price: </span>
-            <span style="color: gray">{{ post.price }}</span>
+            <span style="color: gray">{{ post.price }} USD </span>
+            <span *ngIf="post.billingCycle !== 'ONE_TIME'" style="margin-left: 5%">Billing cycle: </span>
+            <span *ngIf="post.billingCycle !== 'ONE_TIME'" style="color: gray">{{ post.billingCycle }}</span>
             <div></div>
           </div>
           <div

@@ -9,10 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import sep.webshopback.dtos.PaymentResponseDTO;
 import sep.webshopback.dtos.PurchaseDTO;
-import sep.webshopback.exceptions.PaymentUnsuccessfulException;
-import sep.webshopback.exceptions.ProductNotFoundException;
-import sep.webshopback.exceptions.ProductNotInStockException;
-import sep.webshopback.exceptions.PurchaseNotFoundException;
+import sep.webshopback.exceptions.*;
 import sep.webshopback.model.PurchaseOutcome;
 import sep.webshopback.model.PurchaseUserDetails;
 import sep.webshopback.model.User;
@@ -35,7 +32,7 @@ public class PurchaseController {
             return service.purchase(authenticated.getId(), cartId, details);
         } catch (ProductNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (ProductNotInStockException | PaymentUnsuccessfulException e) {
+        } catch (ProductNotInStockException | PaymentUnsuccessfulException | CartInvalidException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }

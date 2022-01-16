@@ -7,7 +7,6 @@ import sep.webshopback.exceptions.ProductNotInStockException;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -29,8 +28,10 @@ public class Product {
     @NotBlank
     private String name;
 
+    @Column
+    private boolean hasQuantity;
+
     @Column(name = "quantity")
-    @NotNull
     private long quantity;
 
     @ElementCollection
@@ -52,10 +53,13 @@ public class Product {
     }
 
     public boolean isAvailable() {
-        return quantity > 0;
+        return quantity > 0 || !hasQuantity;
     }
 
     public void decreaseQuantity(int decrease) throws ProductNotInStockException {
+        if (!hasQuantity) {
+            return;
+        }
         if (quantity < decrease) {
             throw new ProductNotInStockException(name);
         }
@@ -63,6 +67,9 @@ public class Product {
     }
 
     public void increaseQuantity(int increase) {
+        if (!hasQuantity) {
+            return;
+        }
         if (increase < 1) {
             return;
         }
@@ -81,6 +88,18 @@ public class Product {
         return price.get().getPrice();
     }
 
+    public BillingCycle getCurrentBillingCycle() {
+        if (priceList == null) {
+            priceList = new ArrayList<>();
+        }
+        Optional<Price> price = priceList.stream()
+                .max(Comparator.comparing(Price::getActiveFrom));
+        if (price.isEmpty()) {
+            return null;
+        }
+        return price.get().getBillingCycle();
+    }
+
     public float getPrice(LocalDateTime timePoint) {
         if (priceList == null) {
             priceList = new ArrayList<>();
@@ -94,11 +113,24 @@ public class Product {
         return price.get().getPrice();
     }
 
-    public void setPrice(float price) {
+    public BillingCycle getBillingCycle(LocalDateTime timePoint) {
         if (priceList == null) {
             priceList = new ArrayList<>();
         }
-        Price newPrice = new Price(price, LocalDateTime.now());
+        Optional<Price> price = priceList.stream()
+                .filter(p -> p.getActiveFrom().isBefore(timePoint))
+                .max(Comparator.comparing(Price::getActiveFrom));
+        if (price.isEmpty()) {
+            return null;
+        }
+        return price.get().getBillingCycle();
+    }
+
+    public void setPrice(float price, BillingCycle billingCycle) {
+        if (priceList == null) {
+            priceList = new ArrayList<>();
+        }
+        Price newPrice = new Price(billingCycle, price, LocalDateTime.now());
         priceList.add(newPrice);
     }
 }

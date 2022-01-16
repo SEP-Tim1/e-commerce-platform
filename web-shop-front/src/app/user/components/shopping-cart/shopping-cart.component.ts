@@ -17,7 +17,7 @@ export class ShoppingCartComponent implements OnInit {
   @Input() cart: ShoppingCart | null = null;
   @Output() refresh = new EventEmitter<boolean>();
 
-  displayedColumns: string[] = ["name", "price", "dec-button", "quantity", "inc-button", "total", "remove-button"];
+  displayedColumns: string[] = ["name", "price", "billingCycle", "dec-button", "quantity", "inc-button", "total", "remove-button"];
   products: ProductQuantity[] = [];
 
   ngOnInit(): void {

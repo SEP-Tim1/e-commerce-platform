@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import sep.webshopback.client.PSPClient;
 import sep.webshopback.dtos.*;
-import sep.webshopback.exceptions.PaymentUnsuccessfulException;
-import sep.webshopback.exceptions.ProductNotFoundException;
-import sep.webshopback.exceptions.ProductNotInStockException;
-import sep.webshopback.exceptions.PurchaseNotFoundException;
+import sep.webshopback.exceptions.*;
 import sep.webshopback.model.*;
 import sep.webshopback.repositories.ProductRepository;
 import sep.webshopback.repositories.PurchaseRepository;
@@ -45,7 +42,7 @@ public class PurchaseService {
     int port;
 
     @Transactional(rollbackOn = {ProductNotFoundException.class, ProductNotInStockException.class, PaymentUnsuccessfulException.class})
-    public long purchase(long userId, long cartId, PurchaseUserDetails details) throws ProductNotFoundException, ProductNotInStockException, PaymentUnsuccessfulException {
+    public long purchase(long userId, long cartId, PurchaseUserDetails details) throws ProductNotFoundException, ProductNotInStockException, PaymentUnsuccessfulException, CartInvalidException {
         Optional<User> userOpt = userRepository.findById(userId);
         if (!userOpt.isPresent()) {
             throw new ProductNotFoundException();
@@ -59,6 +56,7 @@ public class PurchaseService {
         if (user.getId() != cart.getUser().getId()) {
             throw new ProductNotFoundException();
         }
+        cart.validate();
         Purchase purchase = new Purchase(details, LocalDateTime.now(), cart);
         purchase = repository.save(purchase);
 
@@ -77,6 +75,8 @@ public class PurchaseService {
                                 -1,
                                 prods.getProduct().getName(),
                                 prods.getProduct().getPrice(p.getCreated()),
+                                prods.getProduct().getBillingCycle(p.getCreated()),
+                                prods.getProduct().isHasQuantity(),
                                 prods.getQuantity(),
                                 prods.getTotal(p.getCreated())
                         )).collect(Collectors.toList()),
@@ -92,6 +92,7 @@ public class PurchaseService {
                 purchase.getCreated(),
                 purchase.getTotal(),
                 "USD",
+                purchase.getBillingCycle(),
                 frontUrl + "/success/" + purchase.getId(),
                 frontUrl + "/failure/" + purchase.getId(),
                 frontUrl + "/error/" + purchase.getId(),
@@ -144,6 +145,8 @@ public class PurchaseService {
                                 p.getProduct().getId(),
                                 p.getProduct().getName(),
                                 p.getProduct().getPrice(purchase.get().getCreated()),
+                                p.getProduct().getBillingCycle(purchase.get().getCreated()),
+                                p.getProduct().isHasQuantity(),
                                 p.getQuantity(),
                                 p.getTotal(purchase.get().getCreated()))
                 ).collect(Collectors.toList()),

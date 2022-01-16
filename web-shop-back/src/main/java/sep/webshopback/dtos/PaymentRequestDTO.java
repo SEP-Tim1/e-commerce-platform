@@ -3,6 +3,7 @@ package sep.webshopback.dtos;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import sep.webshopback.model.BillingCycle;
 
 import java.time.LocalDateTime;
 
@@ -16,6 +17,7 @@ public class PaymentRequestDTO {
     private LocalDateTime merchantTimestamp;
     private float amount;
     private String currency;
+    private BillingCycle billingCycle;
     private String successUrl;
     private String failureUrl;
     private String errorUrl;
