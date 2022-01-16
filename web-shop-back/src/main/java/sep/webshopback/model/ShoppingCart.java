@@ -78,12 +78,29 @@ public class ShoppingCart {
     }
 
     public void validate() throws CartInvalidException {
-        if (!products.stream().allMatch(p -> p.getProduct().getCurrentBillingCycle() == BillingCycle.ONE_TIME)
-            || !products.stream().allMatch(p -> p.getProduct().getCurrentBillingCycle() != BillingCycle.ONE_TIME)) {
+        if (!all(BillingCycle.ONE_TIME) && !none(BillingCycle.ONE_TIME)) {
             throw new CartInvalidException("All items must be either one-time or subscription based payments");
         }
-        if (products.stream().allMatch(p -> p.getProduct().getCurrentBillingCycle() != BillingCycle.ONE_TIME) && products.size() > 1) {
+        if (none(BillingCycle.ONE_TIME) && products.size() > 1) {
             throw new CartInvalidException("Only one subscription based product can be in a cart");
         }
+    }
+
+    private boolean all(BillingCycle billingCycle) {
+        for (ProductQuantity product : products) {
+            if (!product.getProduct().getCurrentBillingCycle().equals(billingCycle)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean none(BillingCycle billingCycle) {
+        for (ProductQuantity product : products) {
+            if (product.getProduct().getCurrentBillingCycle().equals(billingCycle)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
