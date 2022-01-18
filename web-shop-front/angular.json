@@ -67,6 +67,11 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "ssl": true,
+            "sslCert": "./ssl/webshop-front.crt",
+            "sslKey": "./ssl/webshop-front.key"
+          },
           "configurations": {
             "production": {
               "browserTarget": "web-shop-front:build:production"

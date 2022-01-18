@@ -96,7 +96,7 @@ public class PurchaseService {
                 frontUrl + "/success/" + purchase.getId(),
                 frontUrl + "/failure/" + purchase.getId(),
                 frontUrl + "/error/" + purchase.getId(),
-                "http://"+ host +":" + port + "/purchase/outcome"
+                "https://"+ host +":" + port + "/purchase/outcome"
         );
         try {
             PaymentResponseIdDTO response = pspClient.create(dto);
