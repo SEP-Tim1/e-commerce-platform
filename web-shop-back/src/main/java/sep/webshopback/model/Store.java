@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import sep.webshopback.exceptions.ProductNotFoundException;
 import sep.webshopback.exceptions.ProductNotInStockException;
+import sep.webshopback.util.SensitiveDataConverter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -33,6 +34,7 @@ public class Store {
     private User owner;
 
     @Column
+    @Convert(converter = SensitiveDataConverter.class)
     private String apiToken;
 
     public Store(String name, List<Product> products, User owner) {
