@@ -1,9 +1,12 @@
 package sep.webshopback.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import sep.webshopback.dtos.NewInfoDTO;
 import sep.webshopback.dtos.UserRegistrationDTO;
@@ -24,6 +27,8 @@ public class UserService implements UserDetailsService {
     private UserRepository userRepository;
     @Autowired
     private StoreRepository storeRepository;
+    @Autowired
+    public PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -36,7 +41,7 @@ public class UserService implements UserDetailsService {
     public User registration(UserRegistrationDTO newUser) throws EmailNotUniqueException, UsernameNotUniqueException {
         validateEmail(newUser.getEmail());
         validateUsername(newUser.getUsername());
-        User user = new User(newUser.getUsername(), newUser.getPassword(), newUser.getEmail(), newUser.getRole());
+        User user = new User(newUser.getUsername(), passwordEncoder.encode(newUser.getPassword()), newUser.getEmail(), newUser.getRole());
         user = userRepository.save(user);
         if (user.getRole() == Role.USER) {
             return user;
