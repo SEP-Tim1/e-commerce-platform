@@ -33,7 +33,7 @@ public class Store {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private User owner;
 
-    @Column
+    @Column(length = 512)
     @Convert(converter = SensitiveDataConverter.class)
     private String apiToken;
 
