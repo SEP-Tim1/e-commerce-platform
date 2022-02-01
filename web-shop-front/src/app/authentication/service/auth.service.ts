@@ -27,8 +27,8 @@ export class AuthService {
 
   constructor(private router: Router, private _http: HttpClient) {}
 
-  logIn(user: LoginDTO) {
-    return axios.post(this.loginUrl, user, { responseType: 'text' });
+  logIn(user: LoginDTO): Observable<any> {
+    return this._http.post(this.loginUrl, user);
   }
 
   register(user: RegistrationDTO) {

@@ -12,13 +12,14 @@ import sep.webshopback.dtos.NewInfoDTO;
 import sep.webshopback.dtos.UserRegistrationDTO;
 import sep.webshopback.exceptions.EmailNotUniqueException;
 import sep.webshopback.exceptions.UsernameNotUniqueException;
-import sep.webshopback.model.Role;
-import sep.webshopback.model.Store;
-import sep.webshopback.model.User;
+import sep.webshopback.model.*;
+import sep.webshopback.repositories.BlockedAccountRepository;
+import sep.webshopback.repositories.LoginAttemptRepository;
 import sep.webshopback.repositories.StoreRepository;
 import sep.webshopback.repositories.UserRepository;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -28,14 +29,27 @@ public class UserService implements UserDetailsService {
     @Autowired
     private StoreRepository storeRepository;
     @Autowired
+    private LoginAttemptRepository loginAttemptRepository;
+    @Autowired
+    private BlockedAccountRepository blockedAccountRepository;
+    @Autowired
     public PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findUserByUsername(username);
-        if (user != null) {
-            return user;
-        } else throw new UsernameNotFoundException("There is no user with username " + username);
+        if (user == null) {
+            throw new UsernameNotFoundException("There is no user with username " + username);
+        }
+        return user;
+    }
+
+    public User get(String username) {
+        User user = userRepository.findUserByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("There is no user with username " + username);
+        }
+        return user;
     }
 
     public User registration(UserRegistrationDTO newUser) throws EmailNotUniqueException, UsernameNotUniqueException {
@@ -72,5 +86,30 @@ public class UserService implements UserDetailsService {
     private void validateUsername(String username) throws UsernameNotUniqueException {
         if (userRepository.findUserByUsername(username) != null)
             throw new UsernameNotUniqueException();
+    }
+
+    public boolean isBlocked(User user) {
+        return blockedAccountRepository.findAllByUserId(user.getId()).stream()
+                .filter(b -> b.getTimestamp().isAfter(LocalDateTime.now().minusDays(1)))
+                .count() > 0;
+    }
+
+    public void failedLoginAttempt(User user) {
+        FailedLoginAttempt loginAttempt = new FailedLoginAttempt();
+        loginAttempt.setUser(user);
+        loginAttempt.setTimestamp(LocalDateTime.now());
+        loginAttemptRepository.save(loginAttempt);
+        tryBlock(user);
+    }
+
+    private void tryBlock(User user) {
+        if (loginAttemptRepository.findAllByUserId(user.getId()).stream()
+                .filter(la -> la.getTimestamp().isAfter(LocalDateTime.now().minusMinutes(10)))
+                .count() >= 3) {
+            BlockedAccount blockedAccount = new BlockedAccount();
+            blockedAccount.setUser(user);
+            blockedAccount.setTimestamp(LocalDateTime.now());
+            blockedAccountRepository.save(blockedAccount);
+        }
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import sep.webshopback.dtos.JwtDTO;
@@ -45,15 +46,25 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
         try {
+            User user = userService.get(loginDTO.getUsername());
+            if (userService.isBlocked(user)) {
+                return ResponseEntity.badRequest().body("Your account is currently blocked");
+            }
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword()));
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            User user = (User) authentication.getPrincipal();
+            user = (User) authentication.getPrincipal();
             if (user.isAccountNonExpired() && user.isAccountNonLocked()) {
                 String jwt = tokenUtils.generateToken(user.getUsername(), user.getRole().toString(), user.getId());
                 return ResponseEntity.ok().body(new JwtDTO(jwt));
             }
-        } catch (BadCredentialsException e) {
+        }
+        catch (UsernameNotFoundException e) {
+            return ResponseEntity.badRequest().body("Username not found");
+        }
+        catch (BadCredentialsException e) {
+            User user = userService.get(loginDTO.getUsername());
+            userService.failedLoginAttempt(user);
             return ResponseEntity.badRequest().body("Incorrect username or password");
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -61,7 +72,6 @@ public class AuthController {
 
     @PostMapping("/logout")
     public ResponseEntity<?> logout() {
-
         SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
         return ResponseEntity.ok("logout");
     }

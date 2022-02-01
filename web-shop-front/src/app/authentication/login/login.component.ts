@@ -34,10 +34,11 @@ export class LoginComponent implements OnInit, OnDestroy {
     const dto = new LoginDTO(this.username, this.password);
     this._auth
       .logIn(dto)
-      .then((response) => {
-        localStorage.setItem('token', response.data.jwt);
+      .subscribe(response => {
+        console.log(response)
+        localStorage.setItem('token', response["jwt"]);
 
-        let decoded = this.helper.decodeToken(response.data.jwt);
+        let decoded = this.helper.decodeToken(response["jwt"]);
 
         localStorage.setItem('role', decoded.role);
         localStorage.setItem('id', decoded.id);
@@ -50,9 +51,10 @@ export class LoginComponent implements OnInit, OnDestroy {
         } else {
           this.router.navigate(['not-found']);
         }
-      })
-      .catch((error) => {
-        this.openSnackBar('Wrong credentials...', 'Ok');
+      },
+      error => {
+        console.log(error);
+        this.openSnackBar(error.error, 'Ok');
       });
   }
 
