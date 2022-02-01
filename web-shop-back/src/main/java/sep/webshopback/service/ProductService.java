@@ -28,6 +28,8 @@ import sep.webshopback.model.User;
 import sep.webshopback.repositories.ProductRepository;
 import sep.webshopback.repositories.StoreRepository;
 
+import javax.annotation.PostConstruct;
+
 @Service
 public class ProductService {
 
@@ -36,7 +38,7 @@ public class ProductService {
 	
 	@Value("${web-shop-back.storage}")
 	private String storageDirectoryPath;
-	
+
 	@Autowired
     public ProductService(ProductRepository productRepository, StoreRepository storeRepository) {
 		this.productRepository = productRepository;
